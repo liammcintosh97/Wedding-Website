@@ -4,10 +4,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   withRouter
 } from "react-router-dom";
 
+import NavBar from "./components/navBar"
 import LandingPage from "./pages/LandingPage";
 import Accommodation from "./pages/Accommodation";
 import Directions from "./pages/Directions";
@@ -15,8 +15,7 @@ import Registry from "./pages/Registry";
 import Vendors from "./pages/Vendors";
 import RSVP from "./pages/RSVP.js";
 
-import './index.css'
-import "./pages/styles/NavBar.css"
+import './index.scss'
 
 class App extends React.Component{
   render(){
@@ -24,16 +23,7 @@ class App extends React.Component{
       <Router>
 
         <header>
-          <nav className="navBar-container">
-          <Link to="/" className="navBar-link">Home</Link>
-            <ul className="navBar-list">
-              <li><Link to="/accommodation" className="navBar-link">Accommodation</Link></li>
-              <li><Link to="/directions" className="navBar-link">Directions</Link></li>
-              <li><Link to="/registry" className="navBar-link">Registry</Link></li>
-              <li><Link to="/venders" className="navBar-link">Our venders</Link></li>
-              <li><Link to="/rsvp" className="navBar-link">RSVP</Link></li>
-            </ul>
-          </nav>
+          <NavBar />
         </header>
 
         <main>
