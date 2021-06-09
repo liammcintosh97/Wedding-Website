@@ -25,8 +25,47 @@ footer{
 
 
 .landingPage-title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   z-index: 1;
   color: white;
+
+  h1{
+    font-size: 40px;
+  }
+
+  *{
+    margin: 0.25em;
+  }
+}
+.landingPage-date-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.landingPage-RSVP-button{
+  text-align: center;
+  width: calc(100% -4px);
+  background-color: white;
+  border: solid 2px white;
+  border-radius: 5px;
+
+  a{
+    color:  #333333;
+    text-decoration: none;
+  }
+
+  &:hover{
+    background-color: transparent;
+  }
+
+  &:hover a{
+    color: white;
+  }
 }
 

@@ -1,7 +1,9 @@
 import React from "react"
+import {Link} from "react-router-dom";
 
-import PictureGallary from "../components/pictureGallary.js"
-import "./styles/LandingPage.scss"
+
+import PictureGallery from "../components/pictureGallery.js"
+import "./styles/landingPage.scss"
 
 class LandingPage extends React.Component{
 
@@ -9,16 +11,17 @@ class LandingPage extends React.Component{
     return (
 
       <div className="landingPage-container">
-
-        <PictureGallary/>
-
         <header>
         </header>
         <main>
+          <PictureGallery/>
           <div className="landingPage-title">
             <h1>Monique & Liam</h1>
-            <h2>are getting Married!</h2>
-            <h3>on the 27/05/2022</h3>
+            <h2><em>are getting married!</em></h2>
+            <div className="landingPage-date-container">
+              <h3>27/05/2022</h3>
+              <h3 className="landingPage-RSVP-button"><Link to="/rsvp">RSVP</Link></h3>
+            </div>
           </div>
         </main>
         <footer>

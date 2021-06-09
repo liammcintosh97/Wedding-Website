@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 
 import NavBar from "./components/navBar"
-import LandingPage from "./pages/LandingPage";
+import LandingPage from "./pages/landingPage";
 import Accommodation from "./pages/Accommodation";
 import Directions from "./pages/Directions";
 import Registry from "./pages/Registry";
