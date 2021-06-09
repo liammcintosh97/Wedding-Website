@@ -22,24 +22,16 @@ class App extends React.Component{
     return (
       <Router>
 
-        <header>
-          <NavBar />
-        </header>
+        <NavBar />
 
-        <main>
-          <Switch>
-            <Route exact path="/" component={withRouter(LandingPage)}/>
-            <Route exact path="/accommodation" component={withRouter(Accommodation)}/>
-            <Route exact path="/directions" component={withRouter(Directions)}/>
-            <Route exact path="/registry" component={withRouter(Registry)}/>
-            <Route exact path="/venders" component={withRouter(Vendors)}/>
-            <Route exact path="/rsvp" component={withRouter(RSVP)}/>
-          </Switch>
-        </main>
-
-        <footer>
-
-        </footer>
+        <Switch>
+          <Route exact path="/" component={withRouter(LandingPage)}/>
+          <Route exact path="/accommodation" component={withRouter(Accommodation)}/>
+          <Route exact path="/directions" component={withRouter(Directions)}/>
+          <Route exact path="/registry" component={withRouter(Registry)}/>
+          <Route exact path="/venders" component={withRouter(Vendors)}/>
+          <Route exact path="/rsvp" component={withRouter(RSVP)}/>
+        </Switch>
 
       </Router>
     );

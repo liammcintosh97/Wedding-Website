@@ -1,0 +1,32 @@
+.landingPage-container{
+  display: grid;
+  grid-template-columns: 100vw;
+  grid-template-rows: auto 100vh auto;
+  grid-template-areas:
+  "hd"
+  "mn"
+  "ft";
+}
+
+header{
+  grid-area: hd;
+}
+
+main{
+  grid-area: mn;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer{
+  grid-area: ft;
+}
+
+
+.landingPage-title{
+  position: absolute;
+  z-index: 1;
+  color: white;
+}
+

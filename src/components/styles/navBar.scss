@@ -1,28 +1,28 @@
 .nav-container{
   width: 100vw;
+  z-index: 3;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  position: absolute;
 
   &:hover nav{
-    height: fit-content;
     max-height: 500px;
     transition: max-height 0.25s ease-in;
   }
 }
 
 nav{
+  width: 100%;
   max-height: 0px;
   transition: max-height 0.5s ease-out;
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #333333;
 }
 
-
 .nav-list{
+  height: 100%;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -31,12 +31,6 @@ nav{
   li{
     list-style-type: none;
     float: left;
-  }
-
-  a{
-    display: block;
-    text-align: center;
-    padding: 16px;
   }
 }
 
@@ -53,14 +47,10 @@ nav{
   }
 }
 
-
-.nav-tag-container{
-  display: flex;
-  justify-content: center;
-}
-
 .nav-tag{
+  line-height: 25px;
   text-align: center;
+  height: 25px;
   width: 25px;
   padding: 5px;
   color: white;
@@ -76,21 +66,18 @@ nav{
 @media screen and (max-width: 600px){
 
   .nav-container{
-    height: 100vh;
-    max-height: unset;
-    width: fit-content;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: unset;
-    align-content: center;
-    justify-content: center;
-
+    width: unset;
+    justify-content: unset;
     &:hover nav{
-      height: 100vh;
       max-height: unset;
       max-width: 500px;
       transition: max-width 0.25s ease-in;
     }
+  }
+
+  .nav-list{
+    height: auto;
+    width: 100%;
   }
 
   .nav-list li{
@@ -98,16 +85,15 @@ nav{
   }
 
   nav{
-    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: unset;
     max-height: unset;
+    height: 100vh;
     max-width: 0px;
     transition: max-width 0.5s ease-out;
-    flex-direction: column;
-
-    >.nav-link{
-      width: 100%;
-      padding: 16px 0px 16px 0px;
-    }
   }
 
 }
