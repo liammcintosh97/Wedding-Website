@@ -6,23 +6,22 @@
   "hd"
   "mn"
   "ft";
-}
 
-header{
-  grid-area: hd;
-}
+  header{
+    grid-area: hd;
+  }
 
-main{
-  grid-area: mn;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  main{
+    grid-area: mn;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-footer{
-  grid-area: ft;
+  footer{
+    grid-area: ft;
+  }
 }
-
 
 .landingPage-title{
   display: flex;

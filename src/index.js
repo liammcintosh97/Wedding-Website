@@ -10,7 +10,7 @@ import {
 import NavBar from "./components/navBar"
 import LandingPage from "./pages/landingPage";
 import Accommodation from "./pages/Accommodation";
-import Directions from "./pages/Directions";
+import Directions from "./pages/directions";
 import Registry from "./pages/Registry";
 import Vendors from "./pages/Vendors";
 import RSVP from "./pages/RSVP.js";
