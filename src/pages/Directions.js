@@ -9,9 +9,9 @@ class Directions extends React.Component{
     return (
       <div className="directionPage-container">
         <header>
+          <h1>Directions</h1>
         </header>
         <main>
-          <h1>Directions</h1>
           <Map/>
         </main>
         <footer>

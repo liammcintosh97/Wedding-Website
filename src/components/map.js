@@ -3,20 +3,12 @@ import {
   GoogleMap,
   DirectionsService,
   DirectionsRenderer,
-  LoadScript
+  LoadScript,
+  StandaloneSearchBox,
+  InfoWindow
 } from "@react-google-maps/api";
 
 import "./styles/map.scss"
-
-const immerse = {
-  lat: -37.6132478,
-  lng: 145.4142731
-};
-
-const lakesfield = {
-  lat: -37.9150717,
-  lng: 145.2784618
-}
 
 class Map extends React.Component {
   constructor (props) {
@@ -24,234 +16,274 @@ class Map extends React.Component {
 
     this.state = {
       response: null,
-      travelMode: 'DRIVING',
-      origin: '',
-      destination: ''
+      travelDistance: '',
+      travelDuration: '',
+      origin: {
+        address: '',
+        coordinates: null
+      },
+      mapLibraries: ["places"],
+      immerse: {
+        lat:-37.6132478,
+        lng: 145.4142731
+      },
+      map: null,
+      directionsService: null,
+      directionsRenderer: null,
+      link: `https://www.google.com/maps/place/Immerse+in+the+Yarra+Valley/@-37.613213,145.4143096,15z/data=!4m11!1m2!3m1!2sImmerse+in+the+Yarra+Valley!3m7!1s0x6ad7d41c04b2f489:0xcb920246e6c2b014!5m2!4m1!1i2!8m2!3d-37.613213!4d145.4143096`,
+      defaultLink: 'https://www.google.com/maps/place/Immerse+in+the+Yarra+Valley/@-37.613213,145.4143096,15z/data=!4m11!1m2!3m1!2sImmerse+in+the+Yarra+Valley!3m7!1s0x6ad7d41c04b2f489:0xcb920246e6c2b014!5m2!4m1!1i2!8m2!3d-37.613213!4d145.4143096'
     }
 
-    this.directionsCallback = this.directionsCallback.bind(this)
-    this.checkDriving = this.checkDriving.bind(this)
-    this.checkBicycling = this.checkBicycling.bind(this)
-    this.checkTransit = this.checkTransit.bind(this)
-    this.checkWalking = this.checkWalking.bind(this)
-    this.getOrigin = this.getOrigin.bind(this)
-    this.getDestination = this.getDestination.bind(this)
+    this.onMapLoad = this.onMapLoad.bind(this)
+    this.onMapUnmount = this.onMapUnmount.bind(this);
+
+    this.directionServiceOnLoad =this.directionServiceOnLoad.bind(this);
+    this.directionServiceOnUnmount = this.directionServiceOnUnmount.bind(this);
+    this.directionsServiceCallback = this.directionsServiceCallback.bind(this)
+
+    this.directionsRendererOnUnmount = this.directionsRendererOnUnmount.bind(this);
+    this.directionsRendererOnLoad = this.directionsRendererOnLoad.bind(this);
+
     this.onClick = this.onClick.bind(this)
     this.onMapClick = this.onMapClick.bind(this)
+    this.onSearchLoad = this.onSearchLoad.bind(this)
+    this.onPlacesChanged = this.onPlacesChanged.bind(this)
+    this.hasValidOrigin = this.hasValidOrigin.bind(this);
+    this.buildLink = this.buildLink.bind(this);
+    this.hadValidResults = this.hadValidResults.bind(this);
+    this.encapsulateRoute = this.encapsulateRoute.bind(this);
   }
 
-  directionsCallback (response) {
-    console.log(response)
+  //Google Map
 
-    if (response !== null) {
-      if (response.status === 'OK') {
-        this.setState(
-          () => ({
-            response
-          })
-        )
-      } else {
-        console.log('response: ', response)
-      }
-    }
+  onMapLoad(map){
+    console.log('Google Map onload: ', map)
+    this.setState({map: map})
   }
 
-  checkDriving ({ target: { checked } }) {
-    checked &&
-      this.setState(
-        () => ({
-          travelMode: 'DRIVING'
-        })
-      )
-  }
-
-  checkBicycling ({ target: { checked } }) {
-    checked &&
-      this.setState(
-        () => ({
-          travelMode: 'BICYCLING'
-        })
-      )
-  }
-
-  checkTransit ({ target: { checked } }) {
-    checked &&
-      this.setState(
-        () => ({
-          travelMode: 'TRANSIT'
-        })
-      )
-  }
-
-  checkWalking ({ target: { checked } }) {
-    checked &&
-      this.setState(
-        () => ({
-          travelMode: 'WALKING'
-        })
-      )
-  }
-
-  getOrigin (ref) {
-    this.origin = ref
-  }
-
-  getDestination (ref) {
-    this.destination = ref
-  }
-
-  onClick () {
-    if (this.origin.value !== '' && this.destination.value !== '') {
-      this.setState(
-        () => ({
-          origin: this.origin.value,
-          destination: this.destination.value
-        })
-      )
-    }
+  onMapUnmount(map){
+    console.log('Google Map unmount: ', map)
+    this.setState({map: null})
   }
 
   onMapClick (...args) {
     console.log('onClick args: ', args)
   }
 
+  //Direction Service
+
+  directionServiceOnLoad(directionsService){
+    console.log('DirectionsService onLoad: ', directionsService)
+    this.setState({directionsService: directionsService})
+  }
+
+  directionServiceOnUnmount(directionsService){
+    console.log('DirectionsService onUnmount: ', directionsService)
+    this.setState({directionsService: null})
+  }
+
+  directionsServiceCallback(response) {
+    console.log('DirectionsService callBack: ', response)
+    var point = response.routes[0].legs[0]
+
+    if (response !== null) {
+      if (response.status === 'OK') {
+        this.setState({
+            response: response,
+            travelDistance: point.distance.text,
+            travelDuration: point.duration.text
+        })
+
+        this.encapsulateRoute()
+      } else {
+        console.log('response: ', response)
+      }
+    }
+  }
+
+  //Direction Renderer
+
+  directionsRendererOnLoad(directionsRenderer){
+    console.log('DirectionsRenderer onLoad: ', directionsRenderer)
+    this.setState({directionsRenderer: directionsRenderer})
+  }
+
+  directionsRendererOnUnmount(directionsRenderer){
+    console.log('DirectionsRenderer onUnmount: ', directionsRenderer)
+    this.setState({directionsRenderer: null})
+  }
+  //Standalone Search Box
+
+  onSearchLoad(ref){
+    this.searchBox = ref;
+  }
+
+  onPlacesChanged(){
+
+    var selectedPlace = this.searchBox.getPlaces()[0];
+
+    var newOrigin = {
+      address: selectedPlace.formatted_address,
+      coordinates: {
+        lat: selectedPlace.geometry.location.lat(),
+        lng: selectedPlace.geometry.location.lng()
+      }
+    }
+
+    this.origin = newOrigin;
+  }
+
+  //Map Form
+
+  onClick () {
+    if (this.hasValidOrigin) {
+      this.setState({
+          response: null,
+          origin: this.origin,
+          link: this.buildLink(this.origin.address)
+        }
+      )
+    }
+  }
+
+  //Helper Methods
+
+  addToLatLng(latLng, toAdd){
+    return{
+      lat: latLng.lat + toAdd,
+      lng: latLng.lng + toAdd
+    }
+  }
+
+  hadValidResults(){
+    return (this.state.link !== this.state.defaultLink) && (this.state.travelDistance !== '') && (this.state.travelDuration !== '')
+  }
+
+  buildLink(originAddress){
+     return `https://www.google.com/maps/dir/${encodeURIComponent(originAddress)}/Immerse+in+the+Yarra+Valley,+1548+Melba+Hwy,+Dixons+Creek+VIC+3775/@-37.763864,145.2048431,11z/`
+  }
+
+  encapsulateRoute(){
+    var maps = window.google.maps;
+
+    var bounds = new maps.LatLngBounds();
+
+    bounds.extend(new window.google.maps.LatLng(this.state.origin.coordinates.lat,this.state.origin.coordinates.lng));
+    bounds.extend(new window.google.maps.LatLng(this.state.immerse.lat,this.state.immerse.lng));
+
+    console.log(this.state.map.getZoom());
+
+    this.state.map.fitBounds(bounds);
+    this.state.map.setCenter(this.state.immerse)
+    this.state.map.setZoom(this.state.map.getZoom() - 1);
+  }
+
+  hasValidOrigin(){
+    return (this.state.origin.address !== '' && this.state.origin.coordinates !== null);
+  }
+
   render () {
+
     return (
         <div className='map-container'>
-          <div className='map-settings'>
-            <hr className='mt-0 mb-3' />
-
-            <div className='row'>
-              <div className='col-md-6 col-lg-4'>
-                <div className='form-group'>
-                  <label htmlFor='ORIGIN'>Origin</label>
-                  <br />
-                  <input id='ORIGIN' className='form-control' type='text' ref={this.getOrigin} />
-                </div>
-              </div>
-
-              <div className='col-md-6 col-lg-4'>
-                <div className='form-group'>
-                  <label htmlFor='DESTINATION'>Destination</label>
-                  <br />
-                  <input id='DESTINATION' className='form-control' type='text' ref={this.getDestination} />
-                </div>
-              </div>
-            </div>
-
-            <div className='d-flex flex-wrap'>
-              <div className='form-group custom-control custom-radio mr-4'>
-                <input
-                  id='DRIVING'
-                  className='custom-control-input'
-                  name='travelMode'
-                  type='radio'
-                  checked={this.state.travelMode === 'DRIVING'}
-                  onChange={this.checkDriving}
-                />
-                <label className='custom-control-label' htmlFor='DRIVING'>Driving</label>
-              </div>
-
-              <div className='form-group custom-control custom-radio mr-4'>
-                <input
-                  id='BICYCLING'
-                  className='custom-control-input'
-                  name='travelMode'
-                  type='radio'
-                  checked={this.state.travelMode === 'BICYCLING'}
-                  onChange={this.checkBicycling}
-                />
-                <label className='custom-control-label' htmlFor='BICYCLING'>Bicycling</label>
-              </div>
-
-              <div className='form-group custom-control custom-radio mr-4'>
-                <input
-                  id='TRANSIT'
-                  className='custom-control-input'
-                  name='travelMode'
-                  type='radio'
-                  checked={this.state.travelMode === 'TRANSIT'}
-                  onChange={this.checkTransit}
-                />
-                <label className='custom-control-label' htmlFor='TRANSIT'>Transit</label>
-              </div>
-
-              <div className='form-group custom-control custom-radio mr-4'>
-                <input
-                  id='WALKING'
-                  className='custom-control-input'
-                  name='travelMode'
-                  type='radio'
-                  checked={this.state.travelMode === 'WALKING'}
-                  onChange={this.checkWalking}
-                />
-                <label className='custom-control-label' htmlFor='WALKING'>Walking</label>
-              </div>
-            </div>
-
-            <button className='btn btn-primary' type='button' onClick={this.onClick}>
-              Build Route
-            </button>
-          </div>
           <LoadScript
-            googleMapsApiKey="AIzaSyAflzEwHOpzz0Mjsi6U5H71rExerRuZvlg"
+            googleMapsApiKey="AIzaSyBT3kSkHNjlaAj0quxgW_kthRPkCr8e_9k"
+            libraries={this.state.mapLibraries}
           >
-            <div className='google-map-container'>
-              <GoogleMap
-                id='google-map'
-                mapContainerStyle={{
-                  height: '100%',
-                  width: '100%'
+          <div className="map-settings">
+            <div className='map-form'>
+              <StandaloneSearchBox
+                bounds= {{
+                  north: this.state.immerse.lat + 5,
+                  south: this.state.immerse.lat - 5,
+                  east: this.state.immerse.lng + 5,
+                  west: this.state.immerse.lng - 5,
                 }}
-                zoom={2}
-                center={immerse}
-                onClick={this.onMapClick}
-                onLoad={map => {
-                  console.log('DirectionsRenderer onLoad map: ', map)
-                }}
-                onUnmount={map => {
-                  console.log('DirectionsRenderer onUnmount map: ', map)
-                }}
+                onLoad={this.onSearchLoad}
+                onPlacesChanged={
+                  this.onPlacesChanged
+                }
               >
-                {
-                  (
-                    this.state.destination !== '' &&
-                    this.state.origin !== ''
-                  ) && (
-                    <DirectionsService
-                      options={{
-                        destination: this.state.destination,
-                        origin: this.state.origin,
-                        travelMode: this.state.travelMode
-                      }}
-                      callback={this.directionsCallback}
-                      onLoad={directionsService => {
-                        console.log('DirectionsService onLoad directionsService: ', directionsService)
-                      }}
-                      onUnmount={directionsService => {
-                        console.log('DirectionsService onUnmount directionsService: ', directionsService)
-                      }}
-                    />
-                  )
-                }
-                {
-                  this.state.response !== null && (
-                    <DirectionsRenderer
-                      options={{
-                        directions: this.state.response
-                      }}
-                      onLoad={directionsRenderer => {
-                        console.log('DirectionsRenderer onLoad directionsRenderer: ', directionsRenderer)
-                      }}
-                      onUnmount={directionsRenderer => {
-                        console.log('DirectionsRenderer onUnmount directionsRenderer: ', directionsRenderer)
-                      }}
-                    />
-                  )
-                }
-              </GoogleMap>
+                <input
+                  type="text"
+                  placeholder="Where are you traveling from?"
+                  className="map-search-input"
+                />
+              </StandaloneSearchBox>
+
+              <button className='map-settings-build-button' onClick={this.onClick}>Build Route</button>
             </div>
-          </LoadScript>
+          </div>
+          <div className='google-map-container'>
+            <GoogleMap
+              id='google-map'
+              mapContainerStyle={{
+                height: '100%',
+                width: '100%'
+              }}
+              zoom={15}
+              center={this.state.immerse}
+              onClick={this.onMapClick}
+              onLoad={this.onMapLoad}
+              onUnmount={this.onMapUnmount}
+              streetView = {this.streetViewPanorama}
+              options = {{
+                streetViewControl: false,
+                clickableIcons: false
+              }}
+            >
+              {
+                (
+                  this.hasValidOrigin() && this.state.response === null
+                )  && (
+                  <DirectionsService
+                      options={{
+                        destination: this.state.immerse,
+                        origin: this.state.origin.address,
+                        travelMode: 'DRIVING',
+                      }}
+                    callback={this.directionsServiceCallback}
+                    onLoad={this.directionServiceOnLoad}
+                    onUnmount={this.directionServiceOnUnmount}
+                  />
+                )
+              }
+              {
+                this.state.response !== null && (
+                  <DirectionsRenderer
+                    options={{
+                      directions: this.state.response,
+                      preserveViewport: true
+                    }}
+                    onLoad={this.directionsRendererOnLoad}
+                    onUnmount={this.directionsRendererOnUnmount}
+                  />
+                )
+              }
+              <InfoWindow
+              position={this.state.immerse}
+              option={{
+                shouldFocus: true
+              }}
+              >
+                <div className="map-infowindow">
+                  <div>
+                    <h2>Immerse in the Yarra Valley</h2>
+                    <p><strong>Address:</strong> 1548 Melba Hwy, Dixons Creek VIC 3775</p>
+                    <p><strong>Phone:</strong> (03) 5965 2444</p>
+                  </div>
+
+                  <div>
+                    <p><strong>Origin:</strong> {this.state.origin.address}</p>
+                    <p><strong>Distance:</strong> {this.state.travelDistance}</p>
+                    <p><strong>Duration:</strong> {this.state.travelDuration}</p>
+                  </div>
+                  <a href={this.state.link}>Open in Google Maps</a>
+                </div>
+              </InfoWindow>
+            </GoogleMap>
+          </div>
+        </LoadScript>
       </div>
     )
   }
