@@ -59,7 +59,7 @@ class Map extends React.Component {
   //Google Map
 
   onMapLoad(map){
-
+    console.log(process.env);
     console.log('Google Map onload: ', map)
     this.setState({map: map})
   }
