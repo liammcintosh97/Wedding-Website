@@ -9,11 +9,11 @@ import {
 
 import NavBar from "./components/navBar.js"
 import LandingPage from "./pages/landingPage.js";
-import Accommodation from "./pages/Accommodation.js";
+import Accommodation from "./pages/accommodation.js";
 import Directions from "./pages/directions.js";
-import Registry from "./pages/Registry.js";
-import Vendors from "./pages/Vendors.js";
-import RSVP from "./pages/RSVP.js";
+import Registry from "./pages/registry.js";
+import Vendors from "./pages/vendors.js";
+import RSVP from "./pages/rsvp.js";
 
 import './index.scss'
 
