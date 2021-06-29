@@ -7,12 +7,12 @@ import {
   withRouter
 } from "react-router-dom";
 
-import NavBar from "./components/navBar"
-import LandingPage from "./pages/landingPage";
-import Accommodation from "./pages/Accommodation";
-import Directions from "./pages/directions";
-import Registry from "./pages/Registry";
-import Vendors from "./pages/Vendors";
+import NavBar from "./components/navBar.js"
+import LandingPage from "./pages/landingPage.js";
+import Accommodation from "./pages/Accommodation.js";
+import Directions from "./pages/directions.js";
+import Registry from "./pages/Registry.js";
+import Vendors from "./pages/Vendors.js";
 import RSVP from "./pages/RSVP.js";
 
 import './index.scss'

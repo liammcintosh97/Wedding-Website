@@ -10,6 +10,8 @@ import {
 
 import "./styles/map.scss"
 
+require('dotenv').config()
+
 class Map extends React.Component {
   constructor (props) {
     super(props)
@@ -57,6 +59,7 @@ class Map extends React.Component {
   //Google Map
 
   onMapLoad(map){
+
     console.log('Google Map onload: ', map)
     this.setState({map: map})
   }
@@ -171,8 +174,6 @@ class Map extends React.Component {
     bounds.extend(new window.google.maps.LatLng(this.state.origin.coordinates.lat,this.state.origin.coordinates.lng));
     bounds.extend(new window.google.maps.LatLng(this.state.immerse.lat,this.state.immerse.lng));
 
-    console.log(this.state.map.getZoom());
-
     this.state.map.fitBounds(bounds);
     this.state.map.setCenter(this.state.immerse)
     this.state.map.setZoom(this.state.map.getZoom() - 1);
@@ -187,7 +188,7 @@ class Map extends React.Component {
     return (
         <div className='map-container'>
           <LoadScript
-            googleMapsApiKey="AIzaSyBT3kSkHNjlaAj0quxgW_kthRPkCr8e_9k"
+            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
             libraries={this.state.mapLibraries}
           >
           <div className="map-settings">
