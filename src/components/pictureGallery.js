@@ -80,27 +80,44 @@ class PictureGallery extends React.Component{
     if (newIndex > slides.length -1) {newIndex = 0};
 
     gallery.setState({slideIndex: newIndex},()=>{
-      setTimeout(()=>{gallery.play(gallery)}, 5500); // Change image every 2 seconds
+      this.playTimer = setTimeout(()=>{gallery.play(gallery)}, 5500); // Change image every 2 seconds
     })
   }
 
   componentDidMount(){
-    window.addEventListener('load', this.handleLoad);
+    console.log("Picture gallery onMount")
+    console.log(document.readyState);
+    if (document.readyState !== "complete") window.addEventListener('load', this.handleLoad);
+    else{ this.handleLoad()}
   }
 
   componentDidUpdate(){
-    window.addEventListener('load', this.handleLoad);
+    console.log("Picture gallery onUpdate")
   }
+
+  componentWillUnmount(){
+    console.log("Picture gallery onUnmount")
+    clearTimeout(this.playTimer);
+    window.removeEventListener('load',this.handleLoad);
+  }
+
 
   handleLoad(){
     var slides = document.getElementsByClassName("gallery-image-container");
     var dots = document.getElementsByClassName("dot");
 
+    console.log("Handle Load")
+    console.log(document)
+    console.log(slides)
+    console.log(dots)
+
     this.setState({
       slides: slides,
       dots: dots,
+    },()=> {
+      this.play(this);
     })
-    this.play(this);
+
   }
 
   render(){
