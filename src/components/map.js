@@ -65,7 +65,17 @@ class Map extends React.Component {
 
   onMapUnmount(map){
     console.log('Google Map unmount: ', map)
-    this.setState({map: null})
+    this.setState({
+      response: null,
+      travelDistance: '',
+      travelDuration: '',
+      origin: {
+        address: '',
+        coordinates: null
+      },
+      map: null,
+      directionsService: null,
+      directionsRenderer: null,})
   }
 
   onMapClick (...args) {

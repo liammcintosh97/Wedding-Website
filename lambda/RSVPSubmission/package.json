@@ -1,0 +1,19 @@
+{
+  "name": "rsvpsubmission",
+  "version": "1.0.0",
+  "description": "Lambda function RSVPSubmission for Monique and Liam's wedding webstie",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compress": "zip -r deploy.zip ./ -x '*.DS_Store*'",
+    "update": "aws lambda update-function-code --function-name RSVPSubmission --zip-file fileb://deploy.zip",
+    "deploy": "npm run compress && npm run update"
+  },
+  "author": "Liam McIntosh",
+  "license": "ISC",
+  "dependencies": {
+    "googleapis": "^39.2.0",
+    "install": "^0.13.0",
+    "npm": "^7.19.1"
+  }
+}
