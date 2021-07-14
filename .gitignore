@@ -3,7 +3,7 @@
 # dependencies
 /node_modules
 /lambda/RSVPSubmission/node_modules
-/lambda/RSVPSubmission/client_secret.json
+/lambda/RSVPSubmission/credentials.json
 /.pnp
 .pnp.js
 

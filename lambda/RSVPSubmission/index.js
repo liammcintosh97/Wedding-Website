@@ -1,8 +1,10 @@
-const { addSubmission } = require('./googleSheets.js');
+const { addSubmission, getData} = require('./googleSheets.js');
 
 exports.handler = async (event) => {
 
-  const submission = JSON.parse(event.body)
+  let submission = event.body
+
+  if(typeof submission !== 'object') submission = JSON.parse(event.body);
 
   console.log(submission);
 
@@ -15,7 +17,8 @@ exports.handler = async (event) => {
   }
 
   try{
-    addSubmission(submission);
+    await addSubmission(submission);
+
     return sendRes(200,JSON.stringify(submission))
   }catch(err){
     return sendRes(500,JSON.stringify(err))

@@ -12,6 +12,7 @@
   "author": "Liam McIntosh",
   "license": "ISC",
   "dependencies": {
+    "google-spreadsheet": "^3.1.15",
     "googleapis": "^39.2.0",
     "install": "^0.13.0",
     "npm": "^7.19.1"
