@@ -44,7 +44,8 @@ async function addSubmission(submission){
     name: submission.name,
     phoneNumber: submission.phoneNumber,
     email: submission.email,
-    message: submission.message
+    message: submission.message,
+    accommodation: submission.accommodation
   });
 }
 
