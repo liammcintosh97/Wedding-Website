@@ -5,7 +5,7 @@ import "./styles/loadingSpinner.scss"
 class LoadingSpinner extends React.Component{ 
   render(){
     return (
-      <div className={"loading-spinner" + " " + this.props.className}></div>
+      <div className={`loading-spinner ${this.props.className}`}></div>
   )}
 }
 

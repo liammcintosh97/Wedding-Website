@@ -89,7 +89,7 @@ class Map extends React.Component {
           shouldFocus: true
         }}
         >
-          <div className="map-infowindow">
+          <div className="map-infoWindow">
             <div>
               <h2>Immerse in the Yarra Valley</h2>
               <p><strong>Address:</strong> 1548 Melba Hwy, Dixons Creek VIC 3775</p>
