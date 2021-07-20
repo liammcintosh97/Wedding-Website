@@ -1,10 +1,162 @@
 import React from "react"
-
 import Map from "../components/map"
+import {
+  LoadScript,
+  StandaloneSearchBox,
+  DirectionsService,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 
 import "./styles/directions.scss"
 
+const immerse = {
+  lat:-37.6132478,
+  lng: 145.4142731
+}
+
+const mapLibraries = ["places"]
+
 class Directions extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      response: null,
+      origin: {
+        address: '',
+        coordinates: null
+      },
+      directionsService: null,
+      directionsRenderer: null,
+      link: ""
+    }
+
+    this.mapRef = React.createRef();
+
+    this.onBuildRoute = this.onBuildRoute.bind(this);
+    this.onPlacesChanged = this.onPlacesChanged.bind(this)
+    this.onSearchLoad = this.onSearchLoad.bind(this)
+
+    this.directionServiceOnLoad =this.directionServiceOnLoad.bind(this);
+    this.directionServiceOnUnmount = this.directionServiceOnUnmount.bind(this);
+    this.directionsServiceCallback = this.directionsServiceCallback.bind(this)
+
+    this.directionsRendererOnUnmount = this.directionsRendererOnUnmount.bind(this);
+    this.directionsRendererOnLoad = this.directionsRendererOnLoad.bind(this);
+
+    this.buildLink = this.buildLink.bind(this);
+    this.hasValidOrigin = this.hasValidOrigin.bind(this);
+    this.encapsulateRoute = this.encapsulateRoute.bind(this);
+  }
+
+  componentWillUnmount(){
+    console.log("Directions page onUnmount");
+    this.setState({
+      response: null,
+      origin: {
+        address: '',
+        coordinates: null
+      },
+      link: ""
+    })
+  }
+
+  onBuildRoute () {
+
+    if (this.origin !== null && this.origin !== undefined) {
+      this.setState({
+          response: null,
+          origin: this.origin,
+          link: this.buildLink(this.origin.address)
+      })
+    }
+  }
+
+  onPlacesChanged(){
+
+    var selectedPlace = this.searchBox.getPlaces()[0];
+
+    var newOrigin = {
+      address: selectedPlace.formatted_address,
+      coordinates: {
+        lat: selectedPlace.geometry.location.lat(),
+        lng: selectedPlace.geometry.location.lng()
+      }
+    }
+
+    this.origin = newOrigin
+  }
+
+  onSearchLoad(ref){
+    this.searchBox = ref;
+  }
+
+   //Direction Service
+
+   directionServiceOnLoad(directionsService){
+    console.log('DirectionsService onLoad: ', directionsService)
+    this.setState({directionsService: directionsService})
+  }
+
+  directionServiceOnUnmount(directionsService){
+    console.log('DirectionsService onUnmount: ', directionsService)
+    this.setState({directionsService: null})
+  }
+
+  directionsServiceCallback(response) {
+    console.log('DirectionsService callBack: ', response)
+    var point = response.routes[0].legs[0]
+
+    if (response !== null) {
+      if (response.status === 'OK') {
+        this.setState({
+            response: response,
+            travelDistance: point.distance.text,
+            travelDuration: point.duration.text
+        })
+
+        this.encapsulateRoute()
+      } else {
+        console.log('response: ', response)
+      }
+    }
+  }
+
+  //Direction Renderer
+
+  directionsRendererOnLoad(directionsRenderer){
+    console.log('DirectionsRenderer onLoad: ', directionsRenderer)
+    this.setState({directionsRenderer: directionsRenderer})
+  }
+
+  directionsRendererOnUnmount(directionsRenderer){
+    console.log('DirectionsRenderer onUnmount: ', directionsRenderer)
+    this.setState({directionsRenderer: null})
+  }
+
+  //Helper Methods
+  encapsulateRoute(){
+    var maps = window.google.maps;
+
+    var bounds = new maps.LatLngBounds();
+
+    bounds.extend(new window.google.maps.LatLng(this.state.origin.coordinates.lat,this.state.origin.coordinates.lng));
+    bounds.extend(new window.google.maps.LatLng(immerse.lat,immerse.lng));
+
+    let currentMap = this.mapRef.current.state.map
+
+    currentMap.fitBounds(bounds);
+    currentMap.setCenter(immerse)
+    currentMap.setZoom(currentMap.getZoom() - 1);
+  }
+
+  buildLink(originAddress){
+    return `https://www.google.com/maps/dir/${encodeURIComponent(originAddress)}/Immerse+in+the+Yarra+Valley,+1548+Melba+Hwy,+Dixons+Creek+VIC+3775/@-37.763864,145.2048431,11z/`
+  }
+
+  hasValidOrigin(){
+    return (this.state.origin.address !== '' && this.state.origin.coordinates !== null);
+  }
+
   render(){
     return (
       <div className="directionPage-container">
@@ -12,7 +164,68 @@ class Directions extends React.Component{
           <h1>Directions</h1>
         </header>
         <main>
-          <Map/>
+        <LoadScript
+            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+            libraries={mapLibraries}
+          >
+          <div className="directions-settings">
+            <div className='directions-form'>
+              <StandaloneSearchBox
+                bounds= {{
+                  north: immerse.lat + 5,
+                  south: immerse.lat - 5,
+                  east: immerse.lng + 5,
+                  west: immerse.lng - 5,
+                }}
+                onLoad={this.onSearchLoad}
+                onPlacesChanged={
+                  this.onPlacesChanged
+                }
+              >
+                <input
+                  type="text"
+                  placeholder="Where are you traveling from?"
+                  className="directions-search-input"
+                />
+              </StandaloneSearchBox>
+
+              <button className='directions-settings-build-button' onClick={this.onBuildRoute}>Build Route</button>
+            </div>
+          </div>
+          <div className="directions-map-container">
+            <Map ref={this.mapRef} directions={this.state}>
+              {
+                (
+                  this.hasValidOrigin() && this.state.response === null
+                ) && (
+                  <DirectionsService
+                      options={{
+                        destination: immerse,
+                        origin: this.state.origin.address,
+                        travelMode: 'DRIVING',
+                      }}
+                    callback={this.directionsServiceCallback}
+                    onLoad={this.directionServiceOnLoad}
+                    onUnmount={this.directionServiceOnUnmount}
+                  />
+                )
+              }
+              {
+                this.hasValidOrigin() && this.state.response !== null && (
+                  <DirectionsRenderer
+                    options={{
+                      directions: this.state.response,
+                      preserveViewport: true
+                    }}
+                    onLoad={this.directionsRendererOnLoad}
+                    onUnmount={this.directionsRendererOnUnmount}
+                  />
+                )
+              }
+            </Map>
+          </div>
+
+        </LoadScript>
         </main>
         <footer>
         </footer>
