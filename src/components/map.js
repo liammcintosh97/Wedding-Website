@@ -1,7 +1,6 @@
 import React from "react";
 import {
   GoogleMap,
-  InfoWindow
 } from "@react-google-maps/api";
 
 import "./styles/map.scss"
@@ -12,8 +11,6 @@ const immerse = {
   lat:-37.6132478,
   lng: 145.4142731
 }
-
-const defaultLink = 'https://www.google.com/maps/place/Immerse+in+the+Yarra+Valley/@-37.613213,145.4143096,15z/data=!4m11!1m2!3m1!2sImmerse+in+the+Yarra+Valley!3m7!1s0x6ad7d41c04b2f489:0xcb920246e6c2b014!5m2!4m1!1i2!8m2!3d-37.613213!4d145.4143096'
 
 class Map extends React.Component {
   constructor (props) {
@@ -35,6 +32,7 @@ class Map extends React.Component {
   onMapLoad(map){
     console.log('Google Map onload: ', map)
     this.setState({map: map})
+    if(this.props.onMapLoad !== null && this.props.onMapLoad !== undefined) this.props.onMapLoad(map);
   }
 
   onMapUnmount(map){
@@ -47,6 +45,7 @@ class Map extends React.Component {
 
   onMapClick (...args) {
     console.log('onClick args: ', args)
+    if(this.props.onMapClick !== null && this.props.onMapClick !== undefined) this.props.onMapClick(args)
   }
 
   //Helper Methods
@@ -82,28 +81,6 @@ class Map extends React.Component {
         }}
       >
         {this.props.children}
-
-        <InfoWindow
-        position={immerse}
-        option={{
-          shouldFocus: true
-        }}
-        >
-          <div className="map-infoWindow">
-            <div>
-              <h2>Immerse in the Yarra Valley</h2>
-              <p><strong>Address:</strong> 1548 Melba Hwy, Dixons Creek VIC 3775</p>
-              <p><strong>Phone:</strong> (03) 5965 2444</p>
-            </div>
-
-            <div>
-              <p><strong>Origin:</strong> {this.hasDirections() ? this.props.directions.origin.address : ""}</p>
-              <p><strong>Distance:</strong> {this.hasDirections() ? this.props.directions.travelDistance : ""}</p>
-              <p><strong>Duration:</strong> {this.hasDirections() ? this.props.directions.travelDuration : ""}</p>
-            </div>
-            <a href={this.hasDirections() ? this.props.directions.link : defaultLink}>Open in Google Maps</a>
-          </div>
-        </InfoWindow>
       </GoogleMap>
     )
   }

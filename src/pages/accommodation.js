@@ -2,11 +2,11 @@ import React from "react"
 import Map from "../components/map"
 import {
   LoadScript,
-  DirectionsService,
   Circle,
 } from "@react-google-maps/api";
 
 import ReactSlider from 'react-slider'
+import LodgingMarker from '../components/lodgingMarker'
 
 import "./styles/accommodation.scss"
 
@@ -25,15 +25,21 @@ class Accommodation extends React.Component{
 
     this.sliderPrefs = {
       defaultValue: 1,
-      minValue: 0,
+      minValue: 1,
       maxValue: 15
     }
 
     this.state = {
       searchRadius: this.sliderPrefs.defaultValue,
       searchCircle: null,
+      searchResults: null,
     }
 
+    this.clickedLodging = null;
+
+    this.onMapLoad = this.onMapLoad.bind(this);
+    this.onMapClick = this.onMapClick.bind(this);
+    this.onLodgingMarkerClick = this.onLodgingMarkerClick.bind(this);
     this.onSliderChange = this.onSliderChange.bind(this);
     this.focusOnCircle = this.focusOnCircle.bind(this);
     this.onCircleLoad = this.onCircleLoad.bind(this);
@@ -42,12 +48,31 @@ class Accommodation extends React.Component{
     this.handlePlaceSearchError = this.handlePlaceSearchError.bind(this)
   }
 
+  onMapLoad(map){
+    this.searchForAccommodation()
+  }
+
+  onMapClick(args){
+    if(this.clickedLodging !== null){
+      this.clickedLodging.infoWindow.close();
+      this.clickedLodging = null;
+    }
+  }
+
+  onLodgingMarkerClick(mapMouseEvent, lodgingMarker){
+    if(this.clickedLodging !== null){
+      this.clickedLodging.infoWindow.close();
+      this.clickedLodging = null;
+    }
+
+    this.clickedLodging = lodgingMarker;
+  }
+
   onSliderChange(value){
     console.log("The slider has been changed",value);
 
     this.setState({searchRadius: value},()=>{
       this.focusOnCircle();
-      this.searchForAccommodation()
     })
   }
 
@@ -55,6 +80,7 @@ class Accommodation extends React.Component{
     console.log('Circle onLoad circle: ', circle)
 
     this.setState({searchCircle: circle})
+    this.searchForAccommodation()
   }
 
   focusOnCircle(){
@@ -64,25 +90,28 @@ class Accommodation extends React.Component{
   }
 
   async searchForAccommodation(){
-    let currentMap = this.mapRef.current.state.map
-    let placesService = new window.google.maps.places.PlacesService(currentMap);
+    this.setState({searchResults:null},()=>{
 
-    let request = {
-      location: immerse,
-      radius: this.state.searchRadius * 1000,
-      keyword: "accommodation",
-      type: ['lodging']
-    }
+      let currentMap = this.mapRef.current.state.map
+      let placesService = new window.google.maps.places.PlacesService(currentMap);
 
-    placesService.nearbySearch(request,this.onAccommodationResults)
+      let request = {
+        location: immerse,
+        radius: this.state.searchRadius * 1000,
+        keyword: "accommodation",
+        type: ['lodging']
+      }
+
+      placesService.nearbySearch(request,this.onAccommodationResults)
+    })
   }
 
  onAccommodationResults(results, status) {
+    console.log(`onAccommodationResults status:`,status);
 
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {
-        console.log(results[i]);
-      }
+      console.log(`There are ${results.length} results`,results);
+      this.setState({searchResults: results})
     }
     else{this.handlePlaceSearchError(status)}
   }
@@ -118,6 +147,7 @@ class Accommodation extends React.Component{
   }
 
   render(){
+
     return (
       <div className="accommodationPage-container">
         <header>
@@ -149,7 +179,11 @@ class Accommodation extends React.Component{
             libraries={mapLibraries}
           >
           <div className="accommodation-map-container">
-            <Map ref={this.mapRef}>
+            <Map
+              ref={this.mapRef}
+              onMapClick={this.onMapClick}
+              onMapLoad={this.onMapLoad}
+              >
               {
                 this.state.searchRadius > 0 &&
                 <Circle
@@ -171,6 +205,25 @@ class Accommodation extends React.Component{
                 />
               }
 
+              {
+                this.state.searchResults !== null && this.state.searchResults.length > 0 && (
+                  this.state.searchResults.map((result) =>{
+                    const location = {
+                      lat: result.geometry.location.lat(),
+                      lng: result.geometry.location.lng()
+                    }
+                    return <LodgingMarker
+                            onLodgingMarkerClick={this.onLodgingMarkerClick}
+                            key={result.place_id}
+                            placeID={result.place_id}
+                            placeName={result.name}
+                            location={location}
+                            rating={result.rating}
+                            mapRef={this.mapRef}
+                            />
+                  })
+                )
+              }
             </Map>
           </div>
 
