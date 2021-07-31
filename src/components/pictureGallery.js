@@ -2,14 +2,6 @@ import React from 'react'
 
 import "./styles/pictureGallery.scss"
 
-import pic1 from "../images/img_5terre_wide.jpeg"
-import pic2 from "../images/img_lights_wide.jpeg"
-import pic3 from "../images/img_mountains_wide.jpeg"
-import pic4 from "../images/img_nature_wide.jpeg"
-import pic5 from "../images/img_snow_wide.jpeg"
-import pic6 from "../images/img_woods_wide.jpeg"
-
-
 class PictureGallery extends React.Component{
   constructor(props){
     super(props);
@@ -123,47 +115,29 @@ class PictureGallery extends React.Component{
   render(){
     return(    
       <div className="gallery-container">
+        {
+          this.props.images.map((image,index) =>{
 
-        <div className="gallery-image-container fade">
-          <div >1 / 6</div>
-          <img src={pic1} alt=""/>
+            return <div className="gallery-image-container fade">
+                    <div >{index + 1} / {this.props.length}</div>
+                    <img src={image} alt=""/>
+                  </div>
+          })
+        }
+
+        <div className="gallery-button-container">
+          <div className="gallery-prev-button" onClick={()=>this.plusSlides(-1)}>&#10094;</div>
+          <div className="gallery-next-button" onClick={()=>this.plusSlides(1)}>&#10095;</div>
         </div>
 
-        <div className="gallery-image-container fade">
-          <div >2 / 6</div>
-          <img src={pic2} alt=""/>
-        </div>
-
-        <div className="gallery-image-container fade">
-          <div >3 / 6</div>
-          <img src={pic3} alt=""/>
-        </div>
-
-        <div className="gallery-image-container fade">
-          <div >4 / 6</div>
-          <img src={pic4} alt=""/>
-        </div>
-
-        <div className="gallery-image-container fade">
-          <div >5 / 6</div>
-          <img src={pic5} alt=""/>
-        </div>
-
-        <div className="gallery-image-container fade">
-          <div>6 / 6</div>
-          <img src={pic6} alt=""/>
-        </div>
-
-        <div className="gallery-prev-button" onClick={()=>this.plusSlides(-1)}>&#10094;</div>
-        <div className="gallery-next-button" onClick={()=>this.plusSlides(1)}>&#10095;</div>
 
         <div className="gallery-dots">
-          <span className="dot" onClick={()=> this.currentSlide(0)}></span>
-          <span className="dot" onClick={()=> this.currentSlide(1)}></span>
-          <span className="dot" onClick={()=> this.currentSlide(2)}></span>
-          <span className="dot" onClick={()=> this.currentSlide(3)}></span>
-          <span className="dot" onClick={()=> this.currentSlide(4)}></span>
-          <span className="dot" onClick={()=> this.currentSlide(5)}></span>
+          {
+            this.props.images.map((image,index) =>{
+
+              return <span className="dot" onClick={()=> this.currentSlide(index)}></span>
+            })
+          }
         </div>
       </div>
 

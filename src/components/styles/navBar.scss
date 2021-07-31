@@ -1,9 +1,9 @@
 .nav-container{
   width: 100vw;
-  z-index: 3;
+  z-index: 4;
   display: flex;
   flex-wrap: wrap;
-  position: absolute;
+  position: fixed;
 
   &:hover nav{
     max-height: 500px;
@@ -18,7 +18,7 @@ nav{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333333;
+  background-color: var(--coolGrey);
 }
 
 .nav-list{
@@ -43,7 +43,7 @@ nav{
   color: white;
 
   &:hover{
-    background-color: #111111;
+    background-color: var(--darkGrey);
   }
 }
 
@@ -54,15 +54,15 @@ nav{
   width: 25px;
   padding: 5px;
   color: white;
-  background-color: #333333;
+  background-color: var(--coolGrey);
   margin: auto;
 
   &:hover{
-    background-color: #333333;
+    background-color: var(--coolGrey);
   }
 }
 
-
+//Left aligned NavBar
 @media screen and (max-width: 600px){
 
   .nav-container{
@@ -96,6 +96,22 @@ nav{
     transition: max-width 0.5s ease-out;
   }
 
+}
+
+@media screen and (max-height: 400px){
+  nav{
+    font-size: 0.75em;
+  }
+
+  .nav-link{
+    padding: 8px
+  }
+
+  .nav-tag{
+    width: 19px;
+    height: 19px;
+    line-height: 19px;
+  }
 }
 
 

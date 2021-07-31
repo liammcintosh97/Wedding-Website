@@ -4,6 +4,8 @@ import {
   InfoWindow
 } from "@react-google-maps/api";
 
+import "./styles/lodgingMarker.scss"
+
 class LodgingMarker extends React.Component{
   constructor(props){
     super(props);

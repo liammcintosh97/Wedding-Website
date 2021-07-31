@@ -9,7 +9,7 @@ class NavBar extends React.Component{
   constructor(props){
     super(props);
 
-    this.state = {smallScreen: false}
+    this.state = {mallScreen: false}
 
     this.handleResize = this.handleResize.bind(this);
 
@@ -33,18 +33,20 @@ class NavBar extends React.Component{
     }
   }
 
+
   render(){
     return(
       <div className="nav-container">
-        <nav>
+        <nav ref={this.navRef}>
           <ul className="nav-list">
             <li><Link to="/" className="nav-link">Home</Link></li>
           </ul>
           <ul className="nav-list">
+            <li><Link to="/venue" className="nav-link">The Venue</Link></li>
             <li><Link to="/accommodation" className="nav-link">Accommodation</Link></li>
             <li><Link to="/directions" className="nav-link">Directions</Link></li>
             <li><Link to="/registry" className="nav-link">Registry</Link></li>
-            <li><Link to="/venders" className="nav-link">Our venders</Link></li>
+            {/*<li><Link to="/venders" className="nav-link">Our venders</Link></li>*/}
             <li><Link to="/rsvp" className="nav-link">RSVP</Link></li>
           </ul>
         </nav>

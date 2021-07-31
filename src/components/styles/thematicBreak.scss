@@ -1,7 +1,18 @@
-.thematic-break {
-  margin: 25px 0px 25px 0px;
+.thematic-break.horizontal {
+  margin: 15px 10px 15px 10px;
   border-top: 3px double #333;
   color: black;
-  width: 60vw
+  width: calc(90vw - 30px);
+  max-width: 600px;
 }
+
+.thematic-break.vertical {
+  margin: 10px 15px 10px 30px;
+  border-top: unset;
+  border-left: 3px double #333;
+  color: black;
+  height: calc(100% - 20px);
+  width: 0px;
+}
+
 

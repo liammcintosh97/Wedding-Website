@@ -12,8 +12,9 @@ import LandingPage from "./pages/landingPage.js";
 import Accommodation from "./pages/accommodation.js";
 import Directions from "./pages/directions.js";
 import Registry from "./pages/registry.js";
-import Vendors from "./pages/vendors.js";
+import VendorsPage from "./pages/vendorsPage.js";
 import RSVP from "./pages/rsvp.js";
+import Venue from "./pages/venue.js";
 
 import './index.scss'
 
@@ -26,10 +27,11 @@ class App extends React.Component{
 
         <Switch>
           <Route exact path="/" component={withRouter(LandingPage)}/>
+          <Route exact path="/venue" component={withRouter(Venue)}/>
           <Route exact path="/accommodation" component={withRouter(Accommodation)}/>
           <Route exact path="/directions" component={withRouter(Directions)}/>
           <Route exact path="/registry" component={withRouter(Registry)}/>
-          <Route exact path="/venders" component={withRouter(Vendors)}/>
+          {/*<Route exact path="/venders" component={withRouter(VendorsPage)}/>*/}
           <Route exact path="/rsvp" component={withRouter(RSVP)}/>
         </Switch>
 

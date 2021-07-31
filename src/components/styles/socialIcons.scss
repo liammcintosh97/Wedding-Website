@@ -1,0 +1,29 @@
+.social-icons{
+  width: 100%;
+  max-width: 200px;
+  height: 30px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  .icon{
+    height: 30px;
+    width: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}
+
+@media  screen and (max-width: 700px){
+  .social-icons{
+    height: 25px;
+    max-width: 150px;
+
+    .icon{
+      height: 25px;
+      width: 25px;
+    }
+  }
+}

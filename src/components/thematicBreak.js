@@ -5,7 +5,7 @@ import "./styles/thematicBreak.scss"
 class ThematicBreak extends React.Component{ 
   render(){
     return (
-      <hr className="thematic-break"></hr>
+      <hr className={`thematic-break ${this.props.direction}`}></hr>
   )}
 }
 

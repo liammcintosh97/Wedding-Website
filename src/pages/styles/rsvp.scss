@@ -2,7 +2,7 @@
   height: 100vh;
   display: grid;
   grid-template-columns: 100vw;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 65px 1fr auto;
   grid-template-areas:
   "hd"
   "mn"
@@ -14,6 +14,10 @@
     justify-content: center;
     align-items: center;
     grid-area: hd;
+
+    h1{
+      margin: 0px;
+    }
   }
 
   main{
@@ -29,7 +33,10 @@
 }
 
 .rsvp-form{
+  width: 90%;
+  max-width: 450px;
   margin-bottom: 15px ;
+  color: inherit
 }
 
 .rsvp-row{
@@ -52,8 +59,6 @@
 }
 
 .rsvp-textArea{
-  font-family: inherit;
-  font-size: inherit;
   resize: none;
 }
 
@@ -65,20 +70,27 @@
   font-style: italic;
   text-align: center;
   font-size: small;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
+  align-self: center;
+  justify-self: center;
 }
 
 input,textarea{
   padding: 10px 8px 10px 8px;
 }
 
-.rsvp-loading-spinner{
-  margin: 0.5em;
-  width: 50px;
-  height: 50px;
-}
-
 .rsvp-alternative{
   width: 80vw;
   text-align: center;
+}
+
+@media screen and (max-width: 430px){
+  .rsvp-row{
+    flex-direction: column;
+  }
+
+  .rsvp-alternative{
+    font-size: 0.9em;
+  }
 }

@@ -73,6 +73,7 @@ class Accommodation extends React.Component{
 
     this.setState({searchRadius: value},()=>{
       this.focusOnCircle();
+      this.searchForAccommodation();
     })
   }
 
@@ -157,9 +158,8 @@ class Accommodation extends React.Component{
         <div className="accommodation-settings">
 
           <div className="accommodation-settings-element">
-            <label>Radius</label>
             <div className="accommodation-radius-slider-container">
-              <p>{this.sliderPrefs.minValue + "km"}</p>
+              <h4>{this.sliderPrefs.minValue + "km"}</h4>
               <ReactSlider
                 className="accommodation-radius-slider"
                 defaultValue={this.sliderPrefs.defaultValue}
@@ -169,7 +169,7 @@ class Accommodation extends React.Component{
                 orientation="horizontal"
                 renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
               />
-              <p>{this.sliderPrefs.maxValue + "km"}</p>
+              <h4>{this.sliderPrefs.maxValue + "km"}</h4>
             </div>
 
           </div>

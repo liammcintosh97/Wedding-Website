@@ -82,8 +82,11 @@ class RSVP extends React.Component{
   }
 
   async onSubmit(event){
-    this.setState({isLoading: true})
     event.preventDefault();
+
+    if(!this.isValidSubmission(this.state.submission)) return
+
+    this.setState({isLoading: true})
 
     try{
       const token = await this.recaptchaRef.current.executeAsync();
@@ -216,10 +219,12 @@ class RSVP extends React.Component{
 
           </div>
 
-          <div className="rsvp-element">
-              <label>Are you you interested in staying at the venue?</label>
-              <input className="rsvp-accommodation" type="checkbox" name="accommodation"  onChange={this.onAccommodationChange} value={this.state.submission.accommodation}/>
-              <p className="rsvp-accommodation-disclaimer">*Please note that there is limited access to onsite accommodation. However you can find alternatives <Link to="/accommodation">here</Link>*</p>
+          <div className="rsvp-row">
+            <div className="rsvp-element">
+                <label>Are you you interested in staying at the venue?</label>
+                <input className="rsvp-accommodation" type="checkbox" name="accommodation"  onChange={this.onAccommodationChange} value={this.state.submission.accommodation}/>
+                <p className="rsvp-accommodation-disclaimer">*Please note that there is limited access to onsite accommodation. However you can find alternatives <Link to="/accommodation">here</Link>*</p>
+            </div>
           </div>
 
           <div className="rsvp-row">
@@ -227,12 +232,9 @@ class RSVP extends React.Component{
               <button className="rsvp-submit" type="submit">Submit</button>
             </div>
           </div>
-          {this.state.isLoading &&
-            <LoadingSpinner className="rsvp-loading-spinner"></LoadingSpinner>
-          }
         </form>
 
-        <ThematicBreak></ThematicBreak>
+        <ThematicBreak direction="horizontal"/>
 
         <div className="rsvp-alternative">
           <h2>Alternatively...</h2>
@@ -246,6 +248,22 @@ class RSVP extends React.Component{
           sitekey={process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE}
           size="invisible"
         />
+        {
+          this.state.isLoading && (
+            <LoadingSpinner
+              style={{
+                  position: "absolute",
+                  left: "15px",
+                  right:"0px",
+                  bottom: "15px"
+                }
+              }
+              className="rsvp-loading-spinner">
+
+            </LoadingSpinner>
+          )
+        }
+
       </main>
       <footer>
       </footer>

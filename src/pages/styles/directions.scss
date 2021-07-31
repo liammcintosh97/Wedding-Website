@@ -2,7 +2,7 @@
   height: 100vh;
   display: grid;
   grid-template-columns: 100vw;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 65px 1fr auto;
   grid-template-areas:
   "hd"
   "mn"
@@ -14,6 +14,10 @@
     justify-content: center;
     align-items: center;
     grid-area: hd;
+
+    h1{
+      margin: 0px;
+    }
   }
 
   main{
@@ -37,6 +41,7 @@
   align-content: center;
 
   .directions-form{
+    min-width: 250px;
     width: auto;
     display: flex;
     flex-direction: column;
@@ -47,7 +52,7 @@
 .directions-search-input{
   box-sizing: border-box;
   border: 1px solid transparent;
-  width: 25vw;
+  width: 100%;
   height: 50px;
   padding: 0 12px;
   border-radius: 3px;
@@ -72,3 +77,9 @@
   justify-content: center;
 }
 
+@media screen and (max-width: 370px){
+
+  .directions-infoWindow{
+    font-size: 8px;
+  }
+}

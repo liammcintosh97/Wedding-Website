@@ -1,8 +1,21 @@
+:root{
+  --burntSienna: #dc6d41;
+  --sinopia: #BE4F23;
+  --isabelline: #F8F5F1;
+  --oxfordBlue: #001429;
+  --lightGrey: #f3f3f3;
+  --coolGrey: #333333;
+  --darkGrey: #111111;
+
+}
+
 html,body{
   width: 100vw;
   height: 100vh;
   padding: 0px;
   margin: 0px;
+  background: var(--isabelline);
+  color: var(--oxfordBlue)
 }
 
 #root{
@@ -10,4 +23,40 @@ html,body{
   height: 100vh;
   padding: 0px;
   margin: 0px;
+}
+
+input,textarea{
+  outline-color: var(--coolGrey);
+
+  &:focus{
+  outline-color: var(--burntSienna);
+  }
+}
+
+button{
+  border: 2px solid transparent;
+  border-radius: 2px;
+  color: var(--isabelline);
+  background-color: var(--coolGrey);
+  box-shadow: 0 2px 6px grey;
+
+  &:hover{
+    border: 2px solid transparent;
+    border-radius: 2px;
+    color: var(--isabelline);
+    background-color: var(--burntSienna);
+  }
+
+  &:active{
+    background-color: var(--sinopia);
+  }
+}
+
+input,textarea,button{
+  font-family: Arial, sans-serif;
+  font-size: Tahoma;
+}
+
+h1,h2,h3,h4{
+  font-family: serif;
 }
