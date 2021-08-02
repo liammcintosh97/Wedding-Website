@@ -108,6 +108,7 @@ class Accommodation extends React.Component{
   }
 
  onAccommodationResults(results, status) {
+    if(window.google === null || window.google === undefined) return
     console.log(`onAccommodationResults status:`,status);
 
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
