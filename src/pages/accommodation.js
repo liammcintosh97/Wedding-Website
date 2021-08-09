@@ -49,7 +49,7 @@ class Accommodation extends React.Component{
   }
 
   onMapLoad(map){
-    this.searchForAccommodation()
+    console.log("On Map load:",map)
   }
 
   onMapClick(args){
@@ -81,7 +81,6 @@ class Accommodation extends React.Component{
     console.log('Circle onLoad circle: ', circle)
 
     this.setState({searchCircle: circle})
-    this.searchForAccommodation()
   }
 
   focusOnCircle(){

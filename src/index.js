@@ -33,7 +33,7 @@ class App extends React.Component{
           <Route exact path="/accommodation" component={withRouter(Accommodation)}/>
           <Route exact path="/directions" component={withRouter(Directions)}/>
           <Route exact path="/registry" component={withRouter(Registry)}/>
-          {/*<Route exact path="/venders" component={withRouter(VendorsPage)}/>*/}
+          <Route exact path="/vendors" component={withRouter(VendorsPage)}/>
           <Route exact path="/rsvp" component={withRouter(RSVP)}/>
         </Switch>
 

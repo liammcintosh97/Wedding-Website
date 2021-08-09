@@ -24,6 +24,8 @@
   }
 
   .image-container{
+    display: flex;
+    justify-content: center;
     grid-area: img;
     padding: 0px 15px 0px 0px;
 
@@ -48,13 +50,15 @@
   }
 }
 
-@media screen and (max-width: 750px){
+
+@media screen and (max-width: 500px){
   .vendor-container{
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto 1fr auto;
+    grid-template-columns: auto ;
+    grid-template-rows: auto auto auto auto;
     grid-template-areas:
-    "img hd"
-    "img det"
-    "img icon";
+    "img"
+    "hd"
+    "det"
+    "icon";
   }
 }
