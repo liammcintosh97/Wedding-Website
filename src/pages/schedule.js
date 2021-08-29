@@ -11,7 +11,7 @@ class Schedule extends React.Component{
     this.state ={
       date: new Date(),
       //debugTime: "",
-      windowWidth: 0,
+      windowWidth: window.innerWidth,
     }
 
     this.resizeListener = null;
