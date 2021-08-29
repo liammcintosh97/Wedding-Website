@@ -102,6 +102,7 @@ class RSVP extends React.Component{
     }catch(e){
       alert("Please verify ReCAPTCHA")
       console.log("Submission was not posted: Failed to verify ReCAPTCHA because of an error", e)
+      this.setState({isLoading: false});
       return;
     }
   }
@@ -163,6 +164,15 @@ class RSVP extends React.Component{
         if(response.status === 200){
           alert("Your RSVP was submitted!")
           console.log("RSVP submission successful: ", data);
+          this.setState({
+            submission:{
+              name: "",
+              phoneNumber: "",
+              email: "",
+              message: "",
+              accommodation: false
+            }
+          })
         }
         else if(response.status === 404){
           alert("Your RSVP failed to submit")

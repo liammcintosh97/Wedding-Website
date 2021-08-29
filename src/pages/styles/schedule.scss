@@ -1,4 +1,43 @@
 .schedulePage-container{
+  height: 100vh;
+
+  main{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.schedule-clock{
+  background-color: white;
+  border: solid 3px var(--accent);
+  box-shadow: 2px 3px 5px grey;
+  border-radius: 10px;
+  padding: 15px;
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+
+  p{
+    margin: 0px;
+  }
+}
+
+.schedule-horizontal{
+  max-height: 800px;
+  min-height: 60vh;
+}
+
+.schedule-vertical{
+  max-height: 90%;
+  max-width: 80vw;
+}
+
+/*
+
+.schedulePage-container{
   display: grid;
   grid-template-columns: 100vw;
   grid-template-rows: 65px 1fr auto;
@@ -37,7 +76,7 @@
   .time{
     border-right: solid 10px transparent;
     border-left: solid 10px transparent;
-    padding: 30px;
+    padding: 15px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -50,24 +89,9 @@
 
   .time.highlighted{
     background-color: white;
-    border-right: solid 10px var(--burntSienna);
+    border-right: solid 10px var(--black);
     border-radius: 5px;
     box-shadow: 1px 3px 5px grey;
-  }
-}
-
-.schedule-clock{
-  background-color: white;
-  border: solid 3px var(--burntSienna);
-  box-shadow: 2px 3px 5px grey;
-  border-radius: 10px;
-  padding: 15px;
-  position: fixed;
-  bottom: 15px;
-  left: 15px;
-
-  p{
-    margin: 0px;
   }
 }
 
@@ -83,4 +107,4 @@
       padding:20px
     }
   }
-}
+}*/

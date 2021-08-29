@@ -164,7 +164,7 @@ class Directions extends React.Component{
     return (
       <div className="directionPage-container">
         <header>
-          <h1>Directions</h1>
+          <h1>directions</h1>
         </header>
         <main>
         <LoadScript

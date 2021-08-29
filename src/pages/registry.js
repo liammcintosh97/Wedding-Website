@@ -7,7 +7,7 @@ class Registry extends React.Component{
     return (
       <div className="registryPage-container">
         <header>
-          <h1>Registry</h1>
+          <h1>registry</h1>
         </header>
         <main>
           <div className="registry-message">

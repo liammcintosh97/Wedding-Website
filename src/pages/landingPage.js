@@ -5,14 +5,12 @@ import {Link} from "react-router-dom";
 import PictureGallery from "../components/pictureGallery.js"
 import "./styles/landingPage.scss"
 
-import pic1 from "../images/img_5terre_wide.jpeg"
-import pic2 from "../images/img_lights_wide.jpeg"
-import pic3 from "../images/img_mountains_wide.jpeg"
-import pic4 from "../images/img_nature_wide.jpeg"
-import pic5 from "../images/img_snow_wide.jpeg"
-import pic6 from "../images/img_woods_wide.jpeg"
+import pic1 from "../images/immerse/bridge.jpeg"
+import pic2 from "../images/immerse/dinning_hall.jpeg"
+import pic3 from "../images/immerse/outside_chapel.jpeg"
+import pic4 from "../images/immerse/trees.jpeg"
 
-const images = [pic1,pic2,pic3,pic4,pic5,pic6]
+const images = [pic1,pic2,pic3,pic4]
 
 class LandingPage extends React.Component{
 
@@ -25,7 +23,9 @@ class LandingPage extends React.Component{
         <main>
           <PictureGallery images={images}/>
           <div className="landingPage-title">
-            <h1>Monique & Liam</h1>
+            <div className="title-text">
+              <h1>LIAM </h1><h1 className="cursive">and</h1><h1> MONIQUE</h1>
+            </div>
             <h2><em>are getting married!</em></h2>
             <div className="landingPage-date-container">
               <h3>27/05/2022</h3>

@@ -152,7 +152,7 @@ class Accommodation extends React.Component{
     return (
       <div className="accommodationPage-container">
         <header>
-          <h1>Accommodation</h1>
+          <h1>accommodation</h1>
         </header>
         <main>
         <div className="accommodation-settings">

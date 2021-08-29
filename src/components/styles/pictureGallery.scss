@@ -12,7 +12,7 @@
 
   /* Number text (1/3 etc) */
   div {
-    color: var(--isabelline);
+    color: white;
     font-size: 12px;
     padding: 8px 12px;
     position: absolute;
@@ -43,7 +43,7 @@
   display: inline;
   cursor: pointer;
   padding: 16px;
-  color: var(--isabelline);
+  color: white;
   font-weight: bold;
   font-size: 20px;
   border-radius: 0 3px 3px 0;
@@ -56,8 +56,8 @@
   border-radius: 3px 0 0 3px;
 
   &:hover{
-    background-color: var(--isabelline);
-    color: var(--burntSienna);
+    background-color: white;
+    color: var(--accent);
   }
 }
 
@@ -65,8 +65,8 @@
   border-radius: 3px 0 0 3px;
 
   &:hover {
-    background-color: var(--isabelline);
-    color: var(--burntSienna);
+    background-color: white;
+    color: var(--accent);
   }
 }
 
@@ -82,13 +82,13 @@
     height: 15px;
     width: 15px;
     margin: 0 2px;
-    background-color: var(--isabelline);
+    background-color: white;
     border-radius: 50%;
     display: inline-block;
     transition: background-color 0.3s ease;
 
     &:hover{
-      background-color: var(--sinopia);
+      background-color: var(--accent-hightlight);
     }
   }
 
@@ -96,7 +96,7 @@
 }
 
 .dot.active{
-  background-color: var(--burntSienna);
+  background-color: var(--accent);
 }
 
 

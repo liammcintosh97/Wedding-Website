@@ -51,8 +51,8 @@
   right: 50px;
 
   button{
-    color: var(--burntSienna);
-    border: solid 2px var(--burntSienna);
+    color: var(--accent);
+    border: solid 2px var(--accent);
     background: transparent;
     height: 50px;
     width: 175px;
@@ -60,9 +60,9 @@
     box-shadow: none;
 
     &:hover{
-      color: var(--isabelline);
-      border: solid 2px var(--burntSienna);
-      background: var(--burntSienna);
+      color: white;
+      border: solid 2px var(--accent);
+      background: var(--accent);
     }
   }
 

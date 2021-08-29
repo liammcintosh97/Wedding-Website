@@ -28,7 +28,7 @@ class App extends React.Component{
 
         <Switch>
           <Route exact path="/" component={withRouter(LandingPage)}/>
-          <Route exact path="/venue" component={withRouter(Venue)}/>
+          {/*<Route exact path="/venue" component={withRouter(Venue)}/>*/}
           <Route exact path="/schedule" component={withRouter(Schedule)}/>
           <Route exact path="/accommodation" component={withRouter(Accommodation)}/>
           <Route exact path="/directions" component={withRouter(Directions)}/>

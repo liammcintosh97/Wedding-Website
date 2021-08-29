@@ -24,26 +24,52 @@
 }
 
 .landingPage-title{
+  padding: 45px 30px 45px 30px;
+  background-color: rgba(var(--accent-rgb),0.9);
+  border: solid 5px white;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: absolute;
   z-index: 1;
-  color: var(--isabelline);
+  color: white;
 
-  h1{
-    font-size: 40px;
+  h2{
+    color: white;
   }
 
   *{
     margin: 0.25em;
+  }
+
+  .title-text{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    h1{
+      color: white;
+      font-size: 50px;
+      margin: 0px;
+      display: inline-block;
+    }
+
+    .cursive{
+      font-size: 30px;
+      line-height: 60px;
+    }
   }
 }
 .landingPage-date-container{
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  h3{
+    color: white;
+  }
 }
 
 
@@ -51,20 +77,21 @@
   text-align: center;
   width: calc(100% -4px);
   background-color: transparent;
-  border: solid 2px var(--isabelline);
+  border: solid 2px white;
   border-radius: 5px;
+  padding: 5px;
 
   a{
-    color: var(--isabelline);
+    color: white;
     text-decoration: none;
   }
 
   &:hover{
-    background-color: var(--isabelline);
+    background-color: white;
   }
 
   &:hover a{
-    color:  var(--burntSienna);
+    color:  var(--accent);
   }
 }
 

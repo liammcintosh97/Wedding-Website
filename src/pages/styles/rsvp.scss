@@ -83,6 +83,10 @@ input,textarea{
 .rsvp-alternative{
   width: 80vw;
   text-align: center;
+
+  p{
+    font-size: small;
+  }
 }
 
 @media screen and (max-width: 430px){

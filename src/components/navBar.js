@@ -2,6 +2,7 @@ import React from 'react'
 import {Link} from "react-router-dom";
 
 import "./styles/navBar.scss"
+import logo from "../images/logo.png"
 
 const smallScreenSize = 600;
 
@@ -39,14 +40,14 @@ class NavBar extends React.Component{
       <div className="nav-container">
         <nav ref={this.navRef}>
           <ul className="nav-list">
-            <li><Link to="/" className="nav-link">Home</Link></li>
+            <li><Link to="/" className="nav-link">home</Link></li>
           </ul>
           <ul className="nav-list">
-            <li><Link to="/venue" className="nav-link">The Venue</Link></li>
-            <li><Link to="/schedule" className="nav-link">Schedule</Link></li>
-            <li><Link to="/accommodation" className="nav-link">Accommodation</Link></li>
-            <li><Link to="/directions" className="nav-link">Directions</Link></li>
-            <li><Link to="/registry" className="nav-link">Registry</Link></li>
+            {/*<li><Link to="/venue" className="nav-link">The Venue</Link></li>*/}
+            <li><Link to="/schedule" className="nav-link">timeline</Link></li>
+            <li><Link to="/accommodation" className="nav-link">accommodation</Link></li>
+            <li><Link to="/directions" className="nav-link">directions</Link></li>
+            <li><Link to="/registry" className="nav-link">registry</Link></li>
             {/*<li><Link to="/venders" className="nav-link">Our venders</Link></li>*/}
             <li><Link to="/rsvp" className="nav-link">RSVP</Link></li>
           </ul>
