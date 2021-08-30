@@ -72,7 +72,7 @@ class RSVP extends React.Component{
   }
 
   onAccommodationChange(event){
-    console.log(event.target.checked)
+    if(process.env.NODE_ENV === 'development') console.log(event.target.checked)
     this.setState(prevState => ({
       submission: {
           ...prevState.submission,
@@ -93,15 +93,15 @@ class RSVP extends React.Component{
 
       if(token === null){
         alert("Please verify ReCAPTCHA")
-        console.log("Submission was not posted: Failed to verify ReCAPTCHA")
+        if(process.env.NODE_ENV === 'development') console.log("Submission was not posted: Failed to verify ReCAPTCHA")
         return;
       }
 
-      console.log("Submitting Form",this.state.submission)
+      if(process.env.NODE_ENV === 'development') console.log("Submitting Form",this.state.submission)
       await this.postFormSubmission(this.state.submission)
     }catch(e){
       alert("Please verify ReCAPTCHA")
-      console.log("Submission was not posted: Failed to verify ReCAPTCHA because of an error", e)
+      if(process.env.NODE_ENV === 'development') console.log("Submission was not posted: Failed to verify ReCAPTCHA because of an error", e)
       this.setState({isLoading: false});
       return;
     }
@@ -163,7 +163,7 @@ class RSVP extends React.Component{
       this.setState({isLoading: false},()=>{
         if(response.status === 200){
           alert("Your RSVP was submitted!")
-          console.log("RSVP submission successful: ", data);
+          if(process.env.NODE_ENV === 'development') console.log("RSVP submission successful: ", data);
           this.setState({
             submission:{
               name: "",
@@ -176,17 +176,17 @@ class RSVP extends React.Component{
         }
         else if(response.status === 404){
           alert("Your RSVP failed to submit")
-          console.log("RSVP submission failure: ", data);
+          if(process.env.NODE_ENV === 'development') console.log("RSVP submission failure: ", data);
         }
         else if(response.status === 50){
           alert("Your RSVP failed to submit")
-          console.log("RSVP submission failure: ", data);
+          if(process.env.NODE_ENV === 'development') console.log("RSVP submission failure: ", data);
         }
         return data;
       })
     }catch(e){
       alert("Your RSVP failed to submit")
-      console.log("RSVP submission failure due to a Fetch error: ",e);
+      if(process.env.NODE_ENV === 'development') console.log("RSVP submission failure due to a Fetch error: ",e);
     }
   }
 

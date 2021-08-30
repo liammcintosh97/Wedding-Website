@@ -95,3 +95,50 @@
   }
 }
 
+@media screen and (max-width: 550px) and (min-width: 460px){
+  .landingPage-title{
+    padding: 30px 15px 30px 15px;
+    .title-text{
+      h1{
+        font-size: 40px;
+      }
+      .cursive{
+        font-size: 30px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 460px) and (min-width: 360px){
+  .landingPage-title{
+    padding: 30px 15px 30px 15px;
+    .title-text{
+      h1{
+        font-size: 30px;
+      }
+      .cursive{
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 360px){
+  .landingPage-title{
+    h2{
+     font-size:1.25em;
+    }
+
+    .title-text{
+      flex-direction: column;
+      gap: 0px;
+
+      h1{
+        font-size: 40px;
+      }
+      .cursive{
+        font-size: 30px;
+      }
+    }
+  }
+}

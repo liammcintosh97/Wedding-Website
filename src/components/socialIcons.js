@@ -38,7 +38,7 @@ class SocialIcons extends React.Component{
             }
           }
           href={this.props.websiteLink}
-          className="icon"></a>
+          className="icon"> </a>
         )
       }
       { this.props.facebookLink && (
@@ -51,7 +51,7 @@ class SocialIcons extends React.Component{
             }
           }
           href={this.props.facebookLink}
-          className="icon"></a>
+          className="icon"> </a>
         )
       }
       { this.props.instagramLink && (
@@ -64,7 +64,7 @@ class SocialIcons extends React.Component{
             }
           }
           href={this.props.instagramLink}
-          className="icon"></a>
+          className="icon"> </a>
         )
       }
       { this.props.twitterLink && (
@@ -77,7 +77,7 @@ class SocialIcons extends React.Component{
             }
           }
           href={this.props.twitterLink}
-          className="icon"></a>
+          className="icon"> </a>
         )
       }
       { this.props.youtubeLink && (
@@ -90,7 +90,7 @@ class SocialIcons extends React.Component{
             }
           }
           href={this.props.youtubeLink}
-          className="icon"></a>
+          className="icon"> </a>
         )
       }
       { this.props.pintrestLink && (
@@ -103,7 +103,7 @@ class SocialIcons extends React.Component{
             }
           }
           href={this.props.pintrestLink}
-          className="icon"></a>
+          className="icon"> </a>
         )
       }
     </div>

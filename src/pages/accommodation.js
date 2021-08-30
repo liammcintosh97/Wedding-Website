@@ -49,7 +49,7 @@ class Accommodation extends React.Component{
   }
 
   onMapLoad(map){
-    console.log("On Map load:",map)
+    if(process.env.NODE_ENV === 'development') console.log("On Map load:",map)
   }
 
   onMapClick(args){
@@ -69,7 +69,7 @@ class Accommodation extends React.Component{
   }
 
   onSliderChange(value){
-    console.log("The slider has been changed",value);
+    if(process.env.NODE_ENV === 'development') console.log("The slider has been changed",value);
 
     this.setState({searchRadius: value},()=>{
       this.focusOnCircle();
@@ -78,7 +78,7 @@ class Accommodation extends React.Component{
   }
 
   onCircleLoad(circle){
-    console.log('Circle onLoad circle: ', circle)
+    if(process.env.NODE_ENV === 'development') console.log('Circle onLoad circle: ', circle)
 
     this.setState({searchCircle: circle})
   }
@@ -108,10 +108,10 @@ class Accommodation extends React.Component{
 
  onAccommodationResults(results, status) {
     if(window.google === null || window.google === undefined) return
-    console.log(`onAccommodationResults status:`,status);
+    if(process.env.NODE_ENV === 'development') console.log(`onAccommodationResults status:`,status);
 
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-      console.log(`There are ${results.length} results`,results);
+      if(process.env.NODE_ENV === 'development') console.log(`There are ${results.length} results`,results);
       this.setState({searchResults: results})
     }
     else{this.handlePlaceSearchError(status)}

@@ -18,24 +18,24 @@ async function getSheet(){
 
     return doc.sheetsByIndex[0];
   } catch(err) {
-    console.log(err);
+    if(process.env.NODE_ENV === 'development') console.log(err);
     return null;
   }
 }
 
 // Asynchronously get the data
 async function getData() {
-  console.log("Getting Sheet Data from : " + googleSheetID)
+  if(process.env.NODE_ENV === 'development') console.log("Getting Sheet Data from : " + googleSheetID)
 
   const sheet = await getSheet();
   if(sheet === null) throw new Error("Unable to get Sheet")
 
   const tab = sheet.sheetsByIndex[0];
-  console.log(tab.title);
+  if(process.env.NODE_ENV === 'development') console.log(tab.title);
 }
 
 async function addSubmission(submission){
-  console.log("Adding submission to sheet : " + googleSheetID)
+  if(process.env.NODE_ENV === 'development') console.log("Adding submission to sheet : " + googleSheetID)
 
   const sheet = await getSheet(clientSecret,googleSheetID);
   if(sheet === null) throw new Error("Unable to get Sheet")

@@ -30,13 +30,13 @@ class Map extends React.Component {
   //Google Map
 
   onMapLoad(map){
-    console.log('Google Map onload: ', map)
+    if(process.env.NODE_ENV === 'development') console.log('Google Map onload: ', map)
     this.setState({map: map})
     if(this.props.onMapLoad !== null && this.props.onMapLoad !== undefined) this.props.onMapLoad(map);
   }
 
   onMapUnmount(map){
-    console.log('Google Map unmount: ', map)
+    if(process.env.NODE_ENV === 'development') console.log('Google Map unmount: ', map)
     this.setState({
       map: null,
       directionsService: null,
@@ -44,7 +44,7 @@ class Map extends React.Component {
   }
 
   onMapClick (...args) {
-    console.log('onClick args: ', args)
+    if(process.env.NODE_ENV === 'development') console.log('onClick args: ', args)
     if(this.props.onMapClick !== null && this.props.onMapClick !== undefined) this.props.onMapClick(args)
   }
 

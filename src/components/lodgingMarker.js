@@ -27,11 +27,11 @@ class LodgingMarker extends React.Component{
   }
 
   onMarkerLoad(mapMouseEvent){
-    console.log(`The marker ${this.props.placeName} was loaded`,mapMouseEvent);
+    if(process.env.NODE_ENV === 'development') console.log(`The marker ${this.props.placeName} was loaded`,mapMouseEvent);
   }
 
   async onMarkerClick(mapMouseEvent){
-    console.log(`The marker ${this.props.placeName} was clicked`,mapMouseEvent);
+    if(process.env.NODE_ENV === 'development') console.log(`The marker ${this.props.placeName} was clicked`,mapMouseEvent);
     this.props.onLodgingMarkerClick(mapMouseEvent,this);
     this.getPlaceDetails();
   }
@@ -40,7 +40,7 @@ class LodgingMarker extends React.Component{
     let currentMap = this.props.mapRef.current.state.map
 
     if(this.state.placeDetails !== null){
-      console.log("Already have place details")
+      if(process.env.NODE_ENV === 'development') console.log("Already have place details")
       this.infoWindow.open({map:currentMap});
       return
     }

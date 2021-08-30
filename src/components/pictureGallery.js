@@ -77,18 +77,18 @@ class PictureGallery extends React.Component{
   }
 
   componentDidMount(){
-    console.log("Picture gallery onMount")
-    console.log(document.readyState);
+    if(process.env.NODE_ENV === 'development') console.log("Picture gallery onMount")
+    if(process.env.NODE_ENV === 'development') console.log(document.readyState);
     if (document.readyState !== "complete") window.addEventListener('load', this.handleLoad);
     else{ this.handleLoad()}
   }
 
   componentDidUpdate(){
-    console.log("Picture gallery onUpdate")
+    if(process.env.NODE_ENV === 'development') console.log("Picture gallery onUpdate")
   }
 
   componentWillUnmount(){
-    console.log("Picture gallery onUnmount")
+    if(process.env.NODE_ENV === 'development') console.log("Picture gallery onUnmount")
     clearTimeout(this.playTimer);
     window.removeEventListener('load',this.handleLoad);
   }
@@ -98,10 +98,10 @@ class PictureGallery extends React.Component{
     var slides = document.getElementsByClassName("gallery-image-container");
     var dots = document.getElementsByClassName("dot");
 
-    console.log("Handle Load")
-    console.log(document)
-    console.log(slides)
-    console.log(dots)
+    if(process.env.NODE_ENV === 'development') console.log("Handle Load")
+    if(process.env.NODE_ENV === 'development') console.log(document)
+    if(process.env.NODE_ENV === 'development') console.log(slides)
+    if(process.env.NODE_ENV === 'development') console.log(dots)
 
     this.setState({
       slides: slides,
@@ -117,11 +117,10 @@ class PictureGallery extends React.Component{
       <div className="gallery-container">
         {
           this.props.images.map((image,index) =>{
-
-            return <div className="gallery-image-container fade">
+            return (<div key={index} className="gallery-image-container fade">
                     <div >{index + 1} / {this.props.length}</div>
                     <img src={image} alt=""/>
-                  </div>
+                  </div>)
           })
         }
 
@@ -135,7 +134,7 @@ class PictureGallery extends React.Component{
           {
             this.props.images.map((image,index) =>{
 
-              return <span className="dot" onClick={()=> this.currentSlide(index)}></span>
+              return <span key={index} className="dot" onClick={()=> this.currentSlide(index)}></span>
             })
           }
         </div>

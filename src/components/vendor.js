@@ -5,9 +5,6 @@ import "./styles/vendor.scss"
 import SocialIcons from "./socialIcons"
 
 class Vendor extends React.Component{
-  constructor(props){
-    super(props);
-  }
 
   render(){
     return (
@@ -17,7 +14,7 @@ class Vendor extends React.Component{
         </div>
 
         <div className= "image-container">
-          <img src={this.props.imageSource} alt={`Image of ${this.props.name}`}/>
+          <img src={this.props.imageSource}  alt={`${this.props.name}`}/>
         </div>
         <div className= "details-container">
           <h3>{this.props.name}</h3>

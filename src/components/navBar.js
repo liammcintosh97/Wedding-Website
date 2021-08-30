@@ -2,7 +2,6 @@ import React from 'react'
 import {Link} from "react-router-dom";
 
 import "./styles/navBar.scss"
-import logo from "../images/logo.png"
 
 const smallScreenSize = 600;
 
@@ -10,15 +9,41 @@ class NavBar extends React.Component{
   constructor(props){
     super(props);
 
-    this.state = {mallScreen: false}
+    this.state = {
+      smallScreen: false,
+      showing: false,
+    }
+
+    this.navRef = React.createRef();
+    this.navContainerRef = React.createRef();
 
     this.handleResize = this.handleResize.bind(this);
+    this.show = this.show.bind(this);
 
     window.addEventListener('resize', this.handleResize);
   }
 
   componentDidMount(){
     this.handleResize();
+
+    this.showTrue = ()=>{this.show(true)};
+    this.showFalse = ()=>{this.show(false)};
+
+    this.navContainerRef.current.addEventListener('mouseenter',this.showTrue);
+    this.navContainerRef.current.addEventListener('mouseleave',this.showFalse);
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener('resize',this.handleNavResize);
+    this.navContainerRef.current.removeEventListener('mouseenter',this.showTrue);
+    this.navContainerRef.current.removeEventListener('mouseleave',this.showFalse);
+  }
+
+  show(show){
+    this.setState({showing: show})
+
+    if(show) this.navRef.current.classList.add("show");
+    else this.navRef.current.classList.remove("show")
   }
 
   handleResize(){
@@ -37,7 +62,7 @@ class NavBar extends React.Component{
 
   render(){
     return(
-      <div className="nav-container">
+      <div ref={this.navContainerRef} className="nav-container">
         <nav ref={this.navRef}>
           <ul className="nav-list">
             <li><Link to="/" className="nav-link">home</Link></li>
@@ -54,7 +79,7 @@ class NavBar extends React.Component{
         </nav>
 
         <div className="nav-tag-container">
-          <div className="nav-tag">{this.state.smallScreen ? "<": "^"}</div>
+          <div onClick={()=>{this.show(!this.state.showing)}} className="nav-tag">{this.state.smallScreen ? "<": "^"}</div>
         </div>
 
       </div>

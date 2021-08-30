@@ -52,7 +52,7 @@ class Directions extends React.Component{
   }
 
   componentWillUnmount(){
-    console.log("Directions page onUnmount");
+    if(process.env.NODE_ENV === 'development') console.log("Directions page onUnmount");
     this.setState({
       response: null,
       origin: {
@@ -96,17 +96,17 @@ class Directions extends React.Component{
    //Direction Service
 
    directionServiceOnLoad(directionsService){
-    console.log('DirectionsService onLoad: ', directionsService)
+    if(process.env.NODE_ENV === 'development') console.log('DirectionsService onLoad: ', directionsService)
     this.setState({directionsService: directionsService})
   }
 
   directionServiceOnUnmount(directionsService){
-    console.log('DirectionsService onUnmount: ', directionsService)
+    if(process.env.NODE_ENV === 'development') console.log('DirectionsService onUnmount: ', directionsService)
     this.setState({directionsService: null})
   }
 
   directionsServiceCallback(response) {
-    console.log('DirectionsService callBack: ', response)
+    if(process.env.NODE_ENV === 'development') console.log('DirectionsService callBack: ', response)
     var point = response.routes[0].legs[0]
 
     if (response !== null) {
@@ -119,7 +119,7 @@ class Directions extends React.Component{
 
         this.encapsulateRoute()
       } else {
-        console.log('response: ', response)
+        if(process.env.NODE_ENV === 'development') console.log('response: ', response)
       }
     }
   }
@@ -127,12 +127,12 @@ class Directions extends React.Component{
   //Direction Renderer
 
   directionsRendererOnLoad(directionsRenderer){
-    console.log('DirectionsRenderer onLoad: ', directionsRenderer)
+    if(process.env.NODE_ENV === 'development') console.log('DirectionsRenderer onLoad: ', directionsRenderer)
     this.setState({directionsRenderer: directionsRenderer})
   }
 
   directionsRendererOnUnmount(directionsRenderer){
-    console.log('DirectionsRenderer onUnmount: ', directionsRenderer)
+    if(process.env.NODE_ENV === 'development') console.log('DirectionsRenderer onUnmount: ', directionsRenderer)
     this.setState({directionsRenderer: null})
   }
 

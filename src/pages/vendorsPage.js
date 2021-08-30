@@ -1,6 +1,6 @@
 import React from "react"
 import Vendor from "../components/vendor";
-import ThematicBreak from "../components/thematicBreak";
+//import ThematicBreak from "../components/thematicBreak";
 
 import "./styles/vendorsPage.scss"
 
@@ -12,9 +12,9 @@ class VendorsPage extends React.Component{
   constructor(props){
     super(props);
 
-    const celebrantRef = React.createRef();
-    const musicianRef = React.createRef();
-    const photographerRef = React.createRef();
+    //const celebrantRef = React.createRef();
+    //const musicianRef = React.createRef();
+    //const photographerRef = React.createRef();
 
     this.scrollToVendor = this.scrollToVendor.bind(this);
   }

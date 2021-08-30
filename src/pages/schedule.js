@@ -48,7 +48,7 @@ class Schedule extends React.Component{
 
   /*
   initTimer(){
-    console.log("This time is: ", this.format12hr(this.state.date))
+    if(process.env.NODE_ENV === 'development') console.log("This time is: ", this.format12hr(this.state.date))
 
     this.timer = setInterval(()=>{this.update(new Date())}, 60 * 1000);
 
@@ -61,7 +61,7 @@ class Schedule extends React.Component{
       let currentTimeStamp = this.state.date.getTime();
 
       let timeElements = this.schedule.current.children;
-      console.log("This current time is: ", currentTime)
+      if(process.env.NODE_ENV === 'development') console.log("This current time is: ", currentTime)
 
       for(var i = 0; i < timeElements.length; i++ ){
 
@@ -87,7 +87,7 @@ class Schedule extends React.Component{
     event.preventDefault();
     let debugTime = new Date(`2022-05-27T${this.state.debugTime}:00+10:00`)
 
-    console.log(debugTime);
+    if(process.env.NODE_ENV === 'development') console.log(debugTime);
 
     this.update(debugTime);
   }*/

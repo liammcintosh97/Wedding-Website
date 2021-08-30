@@ -19,12 +19,9 @@
   --lightGrey: #f3f3f3;
   --coolGrey: #333333;
   --darkGrey: #111111;
-
 }
 
 html,body{
-  width: 100vw;
-  height: 100vh;
   padding: 0px;
   margin: 0px;
   background: white;
@@ -32,18 +29,26 @@ html,body{
 }
 
 #root{
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   padding: 0px;
   margin: 0px;
 }
 
 input,textarea{
+  border: solid 2px grey;
+  border-radius: 2px;
   outline-color: var(--coolGrey);
+  -webkit-appearance: none;
 
   &:focus{
-  outline-color: var(--accent-highlight);
+    outline-color: var(--accent-highlight);
+    border-radius: 2px;
   }
+}
+
+input[type=checkbox]{
+  -webkit-appearance: checkbox;
 }
 
 button{
@@ -52,6 +57,7 @@ button{
   color: white;
   background-color: var(--coolGrey);
   box-shadow: 0 2px 6px grey;
+  -webkit-appearance: none;
 
   &:hover{
     border: 2px solid transparent;
@@ -66,11 +72,13 @@ button{
 }
 
 input,textarea,button{
-  font-family: Arial, sans-serif;
+  font-family: Mon-Regular;
+  font-size: 1em;
 }
 
 p{
-  font-family: Arial, sans-serif;
+  font-family: Mon-Regular;
+  font-size: 1em;
 }
 
 h1{

@@ -6,7 +6,7 @@ exports.handler = async (event) => {
 
   if(typeof submission !== 'object') submission = JSON.parse(event.body);
 
-  console.log(submission);
+  if(process.env.NODE_ENV === 'development') console.log(submission);
 
   if(!isValid(submission)){
     return sendRes(404,JSON.stringify("Submission undefined, null or blank"));

@@ -88,7 +88,7 @@
     transition: background-color 0.3s ease;
 
     &:hover{
-      background-color: var(--accent-hightlight);
+      background-color: var(--accent-highlight);
     }
   }
 
@@ -117,4 +117,12 @@
 @keyframes fade {
   from {opacity: .4}
   to {opacity: 1}
+}
+
+
+@media screen and (max-width:600px){
+  .gallery-button-container{
+    bottom: 30%;
+    justify-content: center;
+  }
 }
