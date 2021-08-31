@@ -11,7 +11,10 @@ class Schedule extends React.Component{
     this.state ={
       date: new Date(),
       //debugTime: "",
-      windowWidth: window.innerWidth,
+      windowSize: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      }
     }
 
     this.resizeListener = null;
@@ -35,7 +38,10 @@ class Schedule extends React.Component{
 
     this.resizeListener = window.addEventListener('resize', ()=>{
       if(!this._ismounted) return;
-      this.setState({windowWidth: window.innerWidth})
+      this.setState({windowSize: {
+        width: window.innerWidth,
+        height: window.innerHeight
+      }})
     })
   }
 
@@ -118,18 +124,23 @@ class Schedule extends React.Component{
     }
   }
 
+  isWidthLarger(size){
+    console.log("Width is larger: ", (size.width > size.height))
+
+    return (size.width > size.height);
+  }
 
   render(){
     return (
       <div className="schedulePage-container">
         <main>
           {
-            this.state.windowWidth >= 800 && (
+            (this.state.windowSize.width >= 800 || this.isWidthLarger(this.state.windowSize)) && (
               <img className="schedule-horizontal" src={ScheduleHorizontal} alt="Wedding Schedule"></img>
             )
           }
           {
-            this.state.windowWidth < 800 && (
+            (this.state.windowSize.width < 800 && !this.isWidthLarger(this.state.windowSize)) && (
               <img className="schedule-vertical" src={ScheduleVertical} alt="Wedding Schedule"></img>
             )
           }

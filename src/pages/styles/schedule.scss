@@ -26,13 +26,15 @@
 }
 
 .schedule-horizontal{
-  max-height: 800px;
   min-height: 60vh;
+
+  max-height: 90%;
+  max-width: 90%;
 }
 
 .schedule-vertical{
-  max-height: 90%;
-  max-width: 80vw;
+  max-height: 75%;
+  max-width: 90%;
 }
 
 /*
