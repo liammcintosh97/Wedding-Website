@@ -3,6 +3,9 @@ import ReCAPTCHA from "react-google-recaptcha";
 import {Link} from "react-router-dom";
 import LoadingSpinner from "../components/loadingSpinner"
 import ThematicBreak from "../components/thematicBreak";
+import SearchBar from "../components/searchBar";
+import Attendee from "../components/attendee";
+
 
 import "./styles/rsvp.scss"
 
@@ -13,78 +16,92 @@ class RSVP extends React.Component{
     super(props);
 
     this.state = {
-      submission: {
-        name: "",
-        phoneNumber: "",
-        email: "",
-        message: "",
-        accommodation: false
+      message: "",
+      accommodation: false,
+      isLoading: false,
+      selection: {
+        name : "",
+        party: []
       },
-      isLoading: false
+      guestList: null,
+      attendees: {
+        names: [],
+        refs: []
+      }
     }
 
     this.recaptchaRef = React.createRef();
 
-    this.onNameChange = this.onNameChange.bind(this);
-    this.onPhoneNumberChange = this.onPhoneNumberChange.bind(this);
-    this.onEmailChange = this.onEmailChange.bind(this);
+    this.onSearchResults = this.onSearchResults.bind(this);
     this.onMessageChange = this.onMessageChange.bind(this);
     this.onAccommodationChange = this.onAccommodationChange.bind(this);
+    this.onAttendeeChecked = this.onAttendeeChecked.bind(this);
+    this.addAttendeeRef =this.addAttendeeRef.bind(this);
 
     this.onSubmit = this.onSubmit.bind(this);
     this.postFormSubmission = this.postFormSubmission.bind(this);
+
+    fetch("http://localhost:8080/getParties")
+      .then(function(response) {
+        return response.json();
+      })
+      .then((jsonData) =>{
+        this.setState({ guestList: jsonData.parties });
+      })
   }
 
-  onNameChange(event){
-    this.setState(prevState => ({
-      submission: {
-          ...prevState.submission,
-          name: event.target.value
-      }
-    }))
+  onAttendeeChecked(checked,name){
+    var attendees = this.state.attendees;
+
+    if(checked && attendees.names.findIndex(i => i === name) === -1){
+      attendees.names.push(name);
+    }
+    else{
+      var nameIndex = attendees.names.findIndex(i => i === name);
+      attendees.names.splice(nameIndex,1);
+      attendees.refs.splice(nameIndex,1);
+    }
+
+    this.setState({attendees: attendees})
   }
 
-  onEmailChange(event){
-    this.setState(prevState => ({
-      submission: {
-          ...prevState.submission,
-          email: event.target.value
-      }
-    }))
+  addAttendeeRef(ref){
+    if(ref === null || ref === undefined) return;
+
+    if(this.state.attendees.refs.findIndex(attenRef => attenRef.props.name === ref.props.name) === -1){
+      this.state.attendees.refs.push(ref)
+    }
   }
 
-  onPhoneNumberChange(event){
-    this.setState(prevState => ({
-      submission: {
-          ...prevState.submission,
-          phoneNumber: event.target.value
+  onSearchResults(selectedName, party){
+
+    this.setState({
+      selection: {
+        name : selectedName,
+        party: party
+      },
+      attendees: {
+        names: [],
+        refs: []
       }
-    }))
+    },()=>{this.onAttendeeChecked(true,selectedName);})
   }
 
   onMessageChange(event){
-    this.setState(prevState => ({
-      submission: {
-          ...prevState.submission,
-          message: event.target.value
-      }
-    }))
+    this.setState({message: event.target.value});
   }
 
   onAccommodationChange(event){
     if(process.env.NODE_ENV === 'development') console.log(event.target.checked)
-    this.setState(prevState => ({
-      submission: {
-          ...prevState.submission,
-          accommodation: event.target.checked
-      }
-    }))
+    this.setState({accommodation: event.target.checked})
   }
 
   async onSubmit(event){
     event.preventDefault();
 
-    if(!this.isValidSubmission(this.state.submission)) return
+    var attendees = this.state.attendees;
+
+    if(!this.validate(attendees)) return
 
     this.setState({isLoading: true})
 
@@ -97,49 +114,37 @@ class RSVP extends React.Component{
         return;
       }
 
-      if(process.env.NODE_ENV === 'development') console.log("Submitting Form",this.state.submission)
-      await this.postFormSubmission(this.state.submission)
+      var attendeeStates = [];
+
+      for(var i = 0; i < attendees.refs.length; i++) attendeeStates.push(attendees.refs[i].state)
+
+      var submission =  {
+        message: this.state.message,
+        accommodation: this.state.accommodation,
+        attendees: attendeeStates
+      }
+
+      if(process.env.NODE_ENV === 'development')console.log("Submitting Form",submission)
+      await this.postFormSubmission(submission)
+
     }catch(e){
       alert("Please verify ReCAPTCHA")
       if(process.env.NODE_ENV === 'development') console.log("Submission was not posted: Failed to verify ReCAPTCHA because of an error", e)
       this.setState({isLoading: false});
       return;
     }
+
+    this.setState({isLoading: false});
   }
 
-  isValidSubmission(submission){
+  validate(attendees){
 
-    if(!this.isValidData(submission.name)){
-      alert("Please Enter a valid name")
-      return false
+    for(var i = 0; i < attendees.refs.length; i++){
+      if(this.isValidData(attendees.refs[i].state.phoneNumber)) return true;
     }
 
-    if(!this.isValidData(submission.phoneNumber)){
-      alert("Please enter a valid phone number")
-      return false
-    }
-
-    if(!this.isValidData(submission.phoneNumber)){
-      alert("Please enter a valid phone number")
-      return false
-    }
-
-    if(!this.isValidData(submission.email)){
-      alert("Please enter a valid email")
-      return false
-    }
-
-    if(!this.isValidData(submission.message)){
-      alert("Please enter a message")
-      return false
-    }
-
-    if(!this.isValidData(submission.accommodation)){
-      alert("Accommodation field is not valid")
-      return false
-    }
-
-    return true;
+    alert("Please enter at least one mobile so that we can contact you!")
+    return false;
   }
 
   isValidData(data){
@@ -165,13 +170,13 @@ class RSVP extends React.Component{
           alert("Your RSVP was submitted!")
           if(process.env.NODE_ENV === 'development') console.log("RSVP submission successful: ", data);
           this.setState({
-            submission:{
-              name: "",
-              phoneNumber: "",
-              email: "",
-              message: "",
-              accommodation: false
-            }
+            message: "",
+            accommodation: false,
+            selection: {
+              name : "",
+              party: []
+            },
+            attendees: []
           })
         }
         else if(response.status === 404){
@@ -197,52 +202,82 @@ class RSVP extends React.Component{
         <h1>RSVP</h1>
       </header>
       <main>
-        <form className="rsvp-form" onSubmit={this.onSubmit}>
-          <div className="rsvp-row">
+        <SearchBar data={this.state.guestList} placeholder="Please enter your name" onResults={this.onSearchResults}/>
 
-            <div className="rsvp-element">
-              <label>Name</label>
-              <input type="text" name="name" onChange={this.onNameChange} value={this.state.submission.name}/>
-            </div>
+        {
+          this.state.selection.name !== "" && (
+            <form className="rsvp-form" onSubmit={this.onSubmit}>
 
-          </div>
+              {
+                this.state.selection.party.length > 1 && (
+                  <div className="rsvp-row">
+                    <div className="rsvp-element">
+                      <label>Your Party</label>
+                      {this.state.selection.party.map((name,index) => (
+                        <div key={index} className="rsvp-party-member">
+                          {this.state.selection.name === name && <input type="checkbox" className="rsvp-person-select" onChange={(event)=>this.onAttendeeChecked(event.target.checked,name)} disabled={true} checked={true}/>}
+                          {this.state.selection.name !== name && <input type="checkbox" className="rsvp-person-select" onChange={(event)=>this.onAttendeeChecked(event.target.checked,name)}/>}
+                          <label>{name}</label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              }
 
-          <div className="rsvp-row">
-            <div className="rsvp-element">
-              <label>Phone Number</label>
-              <input type="text" name="phone number" onChange={this.onPhoneNumberChange} value={this.state.submission.phoneNumber}/>
-            </div>
+              {
+                this.state.attendees.names.length > 0 && (
+                  <div className="rsvp-row">
+                    <div className="rsvp-element">
+                      <div className="rsvp-attendees">
+                        {this.state.attendees.names.map((name,index) => (
+                          <Attendee ref={this.addAttendeeRef} key={index} name={name} selectedName={this.state.selection.name}/>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )
+              }
 
-            <div className="rsvp-element">
-              <label>Email</label>
-              <input type="text" name="email" onChange={this.onEmailChange} value={this.state.submission.email}/>
-            </div>
+              <div className="rsvp-row">
 
-          </div>
+                <div className="rsvp-element">
+                  <label>Message</label>
+                  <textarea className="rsvp-textArea" name="message" rows={10} onChange={this.onMessageChange} value={this.state.message}/>
+                </div>
 
-          <div className="rsvp-row">
+              </div>
 
-            <div className="rsvp-element">
-              <label>Message</label>
-              <textarea className="rsvp-textArea" name="message" rows={10} onChange={this.onMessageChange} value={this.state.submission.message}/>
-            </div>
-
-          </div>
-
-          <div className="rsvp-row">
-            <div className="rsvp-element">
-                <label>Are you you interested in staying at the venue?</label>
-                <input className="rsvp-accommodation" type="checkbox" name="accommodation"  onChange={this.onAccommodationChange} value={this.state.submission.accommodation}/>
-                <p className="rsvp-accommodation-disclaimer">*Please note that there is limited access to onsite accommodation. However you can find alternatives <Link to="/accommodation">here</Link>*</p>
-            </div>
-          </div>
-
-          <div className="rsvp-row">
-            <div className="rsvp-element">
-              <button className="rsvp-submit" type="submit">Submit</button>
-            </div>
-          </div>
-        </form>
+              {
+                this.state.selection.party.length === 1 && (
+                  <div className="rsvp-row">
+                    <div className="rsvp-element">
+                        <label>Are you interested in staying at the venue?</label>
+                        <input className="rsvp-accommodation" type="checkbox" name="accommodation"  onChange={this.onAccommodationChange} value={this.state.accommodation}/>
+                        <p className="rsvp-accommodation-disclaimer">*Please note that there is limited access to onsite accommodation. However you can find alternatives <Link to="/accommodation">here</Link>*</p>
+                    </div>
+                  </div>
+                )
+              }
+              {
+                this.state.selection.party.length > 1 && (
+                  <div className="rsvp-row">
+                    <div className="rsvp-element">
+                        <label>Is your party interested in staying at the venue?</label>
+                        <input className="rsvp-accommodation" type="checkbox" name="accommodation"  onChange={this.onAccommodationChange} value={this.state.accommodation}/>
+                        <p className="rsvp-accommodation-disclaimer">*Please note that there is limited access to onsite accommodation. However you can find alternatives <Link to="/accommodation">here</Link>*</p>
+                    </div>
+                  </div>
+                )
+              }
+              <div className="rsvp-row">
+                <div className="rsvp-element">
+                  <button className="rsvp-submit" type="submit">Submit</button>
+                </div>
+              </div>
+            </form>
+          )
+        }
 
         <ThematicBreak direction="horizontal"/>
 

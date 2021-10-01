@@ -16,6 +16,10 @@ exports.handler = async (event) => {
     return sendRes(404,JSON.stringify("Submission is malformed"));
   }
 
+  if(submission.attendees.length === 0){
+    return sendRes(404,JSON.stringify("Please add at least one attendee to RSVP"));
+  }
+
   try{
     await addSubmission(submission);
 
@@ -44,13 +48,13 @@ function sendRes(status, body){
 
 function isValidSubmission(submission){
 
-  if(!isValid(submission.name) || !isValid(submission.phoneNumber) || !isValid(submission.email) ||!isValid(submission.message) ||!isValid(submission.accommodation))return false
+  if(!isValid(submission.message) || !isValid(submission.accommodation) || !isValid(submission.attendees)) return false
 
   return true
 }
 
 function isValid(value){
-  if(value === null || value === undefined || value === "" || value === {}) return false;
+  if(value === null || value === undefined || value === {}) return false;
 
   return true;
 }

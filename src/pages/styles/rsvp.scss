@@ -66,6 +66,16 @@
   height: 50px;
 }
 
+.rsvp-attendees{
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  border: 2px solid var(--lightGrey);
+  border-radius: 15px;
+  padding: 15px;
+  overflow-x: scroll;
+}
+
 .rsvp-accommodation-disclaimer{
   font-style: italic;
   text-align: center;

@@ -40,13 +40,18 @@ async function addSubmission(submission){
   const sheet = await getSheet(clientSecret,googleSheetID);
   if(sheet === null) throw new Error("Unable to get Sheet")
 
-  await sheet.addRow({
-    name: submission.name,
-    phoneNumber: submission.phoneNumber,
-    email: submission.email,
-    message: submission.message,
-    accommodation: submission.accommodation
-  });
+  for(var i = 0; i< submission.attendees.length; i++){
+    var attendee = submission.attendees[i];
+
+    await sheet.addRow({
+      name: attendee.name,
+      phoneNumber: attendee.phoneNumber,
+      vaccinated: attendee.vaccinated,
+      dietRequirements: attendee.dietRequirements,
+      message: submission.message,
+      accommodation: submission.accommodation
+    });
+  }
 }
 
 module.exports.getData = getData
