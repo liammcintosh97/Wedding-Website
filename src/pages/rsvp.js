@@ -41,7 +41,7 @@ class RSVP extends React.Component{
     this.onSubmit = this.onSubmit.bind(this);
     this.postFormSubmission = this.postFormSubmission.bind(this);
 
-    fetch("http://localhost:8080/getParties")
+    fetch("https://clatqfjdef.execute-api.us-east-2.amazonaws.com/default/getParties")
       .then(function(response) {
         return response.json();
       })
