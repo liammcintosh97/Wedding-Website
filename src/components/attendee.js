@@ -1,4 +1,5 @@
 import React from "react"
+import SingleChoice from "./singleChoice";
 
 import "./styles/attendee.scss"
 
@@ -8,22 +9,16 @@ class Attendee extends React.Component{
 
     this.state = {
       name: this.props.name,
-      phoneNumber: "",
-      vaccinated: false,
+      vaccinated: "",
       dietRequirements: "",
     }
 
-    this.onPhoneNumberChange = this.onPhoneNumberChange.bind(this);
     this.onVaccinationStatusChange = this.onVaccinationStatusChange.bind(this);
     this.onDietaryRequirementsChange = this.onDietaryRequirementsChange.bind(this)
   }
 
-  onPhoneNumberChange(event){
-    this.setState({phoneNumber: event.target.value})
-  }
-
-  onVaccinationStatusChange(event){
-    this.setState({vaccinated: event.target.checked})
+  onVaccinationStatusChange(value){
+    this.setState({vaccinated: value})
   }
 
   onDietaryRequirementsChange(event){
@@ -40,20 +35,15 @@ class Attendee extends React.Component{
           </div>
         </div>
 
-
         <div className="attendee-row">
           <div className="attendee-element">
-            <label>Phone Number</label>
-            <input type="text" name="phone number" onChange={this.onPhoneNumberChange} value={this.state.phoneNumber}/>
-          </div>
-        </div>
-
-        <div className="attendee-row">
-          <div className="attendee-element">
-            <div>
-              <input type="checkbox" name="vaccinated" onChange={this.onVaccinationStatusChange}/>
-              {this.props.selectedName !== this.props.name && <label>Will {this.props.name} be fully vaccinated by 27/05/22</label>}
-              {this.props.selectedName === this.props.name && <label>Will you be fully vaccinated by 27/05/22</label>}
+            <div className="checkBox">
+              {this.props.selectedName !== this.props.name && (
+                <SingleChoice label={"Will " + this.props.name + " be fully vaccinated by 27/05/22 ?"}options={["YES","NO"]} onValueChange={this.onVaccinationStatusChange}/>
+              )}
+              {this.props.selectedName === this.props.name && (
+                <SingleChoice label={"Will you be fully vaccinated by 27/05/22 ?"}options={["YES","NO"]} onValueChange={this.onVaccinationStatusChange}/>
+              )}
             </div>
           </div>
         </div>

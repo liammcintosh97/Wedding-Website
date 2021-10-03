@@ -71,15 +71,8 @@
 }
 
 .directions-infoWindow{
-  font-size: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-@media screen and (max-width: 370px){
-
-  .directions-infoWindow{
-    font-size: 8px;
-  }
-}

@@ -5,6 +5,7 @@ import LoadingSpinner from "../components/loadingSpinner"
 import ThematicBreak from "../components/thematicBreak";
 import SearchBar from "../components/searchBar";
 import Attendee from "../components/attendee";
+import SingleChoice from "../components/singleChoice";
 
 
 import "./styles/rsvp.scss"
@@ -17,7 +18,8 @@ class RSVP extends React.Component{
 
     this.state = {
       message: "",
-      accommodation: false,
+      accommodation: "",
+      phoneNumber: "",
       isLoading: false,
       selection: {
         name : "",
@@ -31,7 +33,9 @@ class RSVP extends React.Component{
     }
 
     this.recaptchaRef = React.createRef();
+    this.rsvpAttendees = React.createRef();
 
+    this.onPhoneNumberChange = this.onPhoneNumberChange.bind(this);
     this.onSearchResults = this.onSearchResults.bind(this);
     this.onMessageChange = this.onMessageChange.bind(this);
     this.onAccommodationChange = this.onAccommodationChange.bind(this);
@@ -91,9 +95,13 @@ class RSVP extends React.Component{
     this.setState({message: event.target.value});
   }
 
-  onAccommodationChange(event){
-    if(process.env.NODE_ENV === 'development') console.log(event.target.checked)
-    this.setState({accommodation: event.target.checked})
+  onPhoneNumberChange(event){
+    this.setState({phoneNumber: event.target.value})
+  }
+
+  onAccommodationChange(value){
+    if(process.env.NODE_ENV === 'development') console.log(value)
+    this.setState({accommodation: value})
   }
 
   async onSubmit(event){
@@ -101,7 +109,24 @@ class RSVP extends React.Component{
 
     var attendees = this.state.attendees;
 
-    if(!this.validate(attendees)) return
+    if(!this.isValidData(this.state.phoneNumber)){
+      alert("Please enter a contact number")
+      return
+    }
+
+    if(!this.isValidData(this.state.accommodation)){
+      alert("Please state your accommodation preference")
+      return
+    }
+
+    for(var i= 0;i < attendees.refs.length; i++){
+      if(!this.isValidData(attendees.refs[i].state.vaccinated)){
+        if(attendees.refs[i].state.name === this.state.selection.name) alert("Please enter your vaccination status")
+        else alert("Please enter the vaccination status of " + attendees.refs[i].state.name)
+
+        return;
+      }
+    }
 
     this.setState({isLoading: true})
 
@@ -109,7 +134,7 @@ class RSVP extends React.Component{
       const token = await this.recaptchaRef.current.executeAsync();
 
       if(token === null){
-        alert("Please verify ReCAPTCHA")
+        alert("Please verify ReCAPTCHA or try submitting again")
         if(process.env.NODE_ENV === 'development') console.log("Submission was not posted: Failed to verify ReCAPTCHA")
         return;
       }
@@ -121,6 +146,7 @@ class RSVP extends React.Component{
       var submission =  {
         message: this.state.message,
         accommodation: this.state.accommodation,
+        phoneNumber: this.state.phoneNumber,
         attendees: attendeeStates
       }
 
@@ -135,16 +161,6 @@ class RSVP extends React.Component{
     }
 
     this.setState({isLoading: false});
-  }
-
-  validate(attendees){
-
-    for(var i = 0; i < attendees.refs.length; i++){
-      if(this.isValidData(attendees.refs[i].state.phoneNumber)) return true;
-    }
-
-    alert("Please enter at least one mobile so that we can contact you!")
-    return false;
   }
 
   isValidData(data){
@@ -172,6 +188,7 @@ class RSVP extends React.Component{
           this.setState({
             message: "",
             accommodation: false,
+            phoneNumber: "",
             selection: {
               name : "",
               party: []
@@ -211,13 +228,13 @@ class RSVP extends React.Component{
               {
                 this.state.selection.party.length > 1 && (
                   <div className="rsvp-row">
-                    <div className="rsvp-element">
+                    <div className="rsvp-party">
                       <label>Your Party</label>
                       {this.state.selection.party.map((name,index) => (
                         <div key={index} className="rsvp-party-member">
                           {this.state.selection.name === name && <input type="checkbox" className="rsvp-person-select" onChange={(event)=>this.onAttendeeChecked(event.target.checked,name)} disabled={true} checked={true}/>}
                           {this.state.selection.name !== name && <input type="checkbox" className="rsvp-person-select" onChange={(event)=>this.onAttendeeChecked(event.target.checked,name)}/>}
-                          <label>{name}</label>
+                          <p>{name}</p>
                         </div>
                       ))}
                     </div>
@@ -225,36 +242,39 @@ class RSVP extends React.Component{
                 )
               }
 
+              <div className="rsvp-row">
+                <div className="rsvp-phoneNumber">
+                  { this.state.selection.party.length === 1 && (<label>Contact Number</label>)}
+                  { this.state.selection.party.length > 1 && (<label>Party Contact Number</label>)}
+                  <input type="text" name="phone number" onChange={this.onPhoneNumberChange} value={this.state.phoneNumber}/>
+                </div>
+              </div>
+
               {
                 this.state.attendees.names.length > 0 && (
                   <div className="rsvp-row">
-                    <div className="rsvp-element">
-                      <div className="rsvp-attendees">
-                        {this.state.attendees.names.map((name,index) => (
-                          <Attendee ref={this.addAttendeeRef} key={index} name={name} selectedName={this.state.selection.name}/>
-                        ))}
-                      </div>
+                    <div ref={this.rsvpAttendees}className="rsvp-attendees">
+                      {this.state.attendees.names.map((name,index) => (
+                        <Attendee ref={this.addAttendeeRef} key={index} name={name} selectedName={this.state.selection.name}/>
+                      ))}
                     </div>
                   </div>
                 )
               }
 
               <div className="rsvp-row">
-
-                <div className="rsvp-element">
+                <div className="rsvp-message">
                   <label>Message</label>
                   <textarea className="rsvp-textArea" name="message" rows={10} onChange={this.onMessageChange} value={this.state.message}/>
                 </div>
-
               </div>
 
               {
                 this.state.selection.party.length === 1 && (
                   <div className="rsvp-row">
-                    <div className="rsvp-element">
-                        <label>Are you interested in staying at the venue?</label>
-                        <input className="rsvp-accommodation" type="checkbox" name="accommodation"  onChange={this.onAccommodationChange} value={this.state.accommodation}/>
-                        <p className="rsvp-accommodation-disclaimer">*Please note that there is limited access to onsite accommodation. However you can find alternatives <Link to="/accommodation">here</Link>*</p>
+                    <div className="rsvp-accommodation">
+                      <SingleChoice label={"Will you be interested in staying at the venue ?"} options={["YES","NO"]} onValueChange={this.onAccommodationChange}/>
+                      <p className="rsvp-accommodation-disclaimer">*Please note that there is limited access to onsite accommodation. However you can find alternatives <Link to="/accommodation">here</Link>*</p>
                     </div>
                   </div>
                 )
@@ -263,18 +283,14 @@ class RSVP extends React.Component{
                 this.state.selection.party.length > 1 && (
                   <div className="rsvp-row">
                     <div className="rsvp-element">
-                        <label>Is your party interested in staying at the venue?</label>
-                        <input className="rsvp-accommodation" type="checkbox" name="accommodation"  onChange={this.onAccommodationChange} value={this.state.accommodation}/>
-                        <p className="rsvp-accommodation-disclaimer">*Please note that there is limited access to onsite accommodation. However you can find alternatives <Link to="/accommodation">here</Link>*</p>
+                      <SingleChoice label={"Will your party be interested in staying at the venue ?"} options={["YES","NO"]} onValueChange={this.onAccommodationChange}/>
+                      <p className="rsvp-accommodation-disclaimer">*Please note that there is limited access to onsite accommodation. However you can find alternatives <Link to="/accommodation">here</Link>*</p>
                     </div>
                   </div>
                 )
               }
-              <div className="rsvp-row">
-                <div className="rsvp-element">
-                  <button className="rsvp-submit" type="submit">Submit</button>
-                </div>
-              </div>
+
+              <button className="rsvp-submit" type="submit">Submit</button>
             </form>
           )
         }

@@ -33,28 +33,43 @@
 }
 
 .rsvp-form{
-  width: 90%;
-  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 800px;
   margin-bottom: 15px ;
   color: inherit
 }
 
 .rsvp-row{
-  margin: 0.5em 0px 0.5em 0px;
+  margin: 0.5em;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
 }
 
-.rsvp-element{
-  width: 100%;
-  margin: 0px 0.5em 0px 0.5em;
+.rsvp-party{
   display: flex;
   flex-direction: column;
+  gap: 0.5em;
 
   label{
     margin: 0.25em 0px 0.25em 0px;
+  }
+}
+.rsvp-party-member{
+  display: flex;
+  flex-direction: row;
+
+  input{
+    margin: 0px
+  }
+
+  p{
+    margin: 0px;
+    margin-left: 1em;
+    margin-top: 0.1em;
   }
 }
 
@@ -63,27 +78,42 @@
 }
 
 .rsvp-submit{
+  margin: 30px 30px 15px 30px;
   height: 50px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.rsvp-message{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  label{
+    margin: 0.25em 0px 0.25em 0px;
+  }
+}
+
+.rsvp-phoneNumber{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .rsvp-attendees{
   display: flex;
-  flex-direction: row;
+  width: calc(100% - 34px );
+  flex-direction: column;
   gap: 15px;
-  border: 2px solid var(--lightGrey);
-  border-radius: 15px;
+  border: solid 2px var(--lightGrey);
+  border-radius: 2px;
   padding: 15px;
-  overflow-x: scroll;
 }
 
 .rsvp-accommodation-disclaimer{
   font-style: italic;
-  text-align: center;
   font-size: small;
   width: 100%;
   max-width: 400px;
-  align-self: center;
-  justify-self: center;
 }
 
 input,textarea{
@@ -91,8 +121,13 @@ input,textarea{
 }
 
 .rsvp-alternative{
+  margin-bottom: 30px;
   width: 80vw;
   text-align: center;
+
+  h2{
+    font-size: 1.25em;
+  }
 
 }
 

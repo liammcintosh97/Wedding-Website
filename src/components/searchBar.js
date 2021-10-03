@@ -42,13 +42,13 @@ class SearchBar extends React.Component{
     var results = []
     this.setState({results: []});
 
-    var query = value.charAt(0).toUpperCase() + value.slice(1)
+    var query = value.toUpperCase();
 
     if(query.length < 3) return;
 
     for(var i = 0; i < this.props.data.length; i++){
       for(var j = 0; j < this.props.data[i].length; j++){
-        if(this.props.data[i][j].includes(query)) results.push(this.props.data[i][j])
+        if(this.props.data[i][j].toUpperCase().includes(query)) results.push(this.props.data[i][j])
       }
     }
     this.setState({results: results});

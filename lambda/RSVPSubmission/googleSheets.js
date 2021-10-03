@@ -45,7 +45,7 @@ async function addSubmission(submission){
 
     await sheet.addRow({
       name: attendee.name,
-      phoneNumber: attendee.phoneNumber,
+      phoneNumber: submission.phoneNumber,
       vaccinated: attendee.vaccinated,
       dietRequirements: attendee.dietRequirements,
       message: submission.message,

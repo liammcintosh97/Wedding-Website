@@ -1,0 +1,26 @@
+.checkBox{
+
+  label{
+    margin-bottom: 1em;
+  }
+}
+
+.checkBox-elements{
+  display: flex;
+  flex-direction: row;
+  gap: 1.5em;
+  margin-top: 0.5em;
+
+  div{
+    display: flex;
+    flex-direction: row;
+
+    p,input{
+      margin: 0px;
+    }
+
+    p{
+      margin-left: 1em;
+    }
+  }
+}

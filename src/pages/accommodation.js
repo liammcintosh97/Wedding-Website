@@ -50,6 +50,8 @@ class Accommodation extends React.Component{
 
   onMapLoad(map){
     if(process.env.NODE_ENV === 'development') console.log("On Map load:",map)
+
+    this.searchForAccommodation();
   }
 
   onMapClick(args){

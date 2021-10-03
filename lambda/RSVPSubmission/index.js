@@ -48,7 +48,7 @@ function sendRes(status, body){
 
 function isValidSubmission(submission){
 
-  if(!isValid(submission.message) || !isValid(submission.accommodation) || !isValid(submission.attendees)) return false
+  if(!isValid(submission.message) || !isValid(submission.accommodation) || !isValid(submission.attendees) || !isValid(submission.phoneNumber)) return false
 
   return true
 }

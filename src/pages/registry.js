@@ -11,7 +11,7 @@ class Registry extends React.Component{
         </header>
         <main>
           <div className="registry-message">
-            <h2>Coming Soon!</h2>
+            <h1>Coming Soon!</h1>
             <p><em>Please come back at a later date as we create our registries</em></p>
           </div>
         </main>
