@@ -10,9 +10,8 @@ class Registry extends React.Component{
           <h1>registry</h1>
         </header>
         <main>
-          <div className="registry-message">
-            <h1>Coming Soon!</h1>
-            <p><em>Please come back at a later date as we create our registries</em></p>
+          <div>
+            <iframe title="Registry Frame" src="https://www.myregistry.com/wedding-registry/monique-borg-and-liam-mcintosh-bayswater-victoria/3070649"/>
           </div>
         </main>
         <footer>
