@@ -25,6 +25,9 @@ class Registry extends React.Component{
           <div class="registry-message">
             <p>Our wedding registry is brought to you by MyRegistry.com you can add to it by following this <a href="https://www.myregistry.com/wedding-registry/monique-borg-and-liam-mcintosh-bayswater-victoria/3070649">link</a> or by interacting with this page</p>
           </div>
+          <div class="registry-message">
+            <p>There will also be a wishing well, if you'd like to offer a monetary gift </p>
+          </div>
           <div id="registry-container">
           </div>
         </main>
